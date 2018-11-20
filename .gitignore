@@ -1,4 +1,6 @@
 *.class
-.idea
+.idea/
 *.iml
+target/
+*.db
 modules.xml
