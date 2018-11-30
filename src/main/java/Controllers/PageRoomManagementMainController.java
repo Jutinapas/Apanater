@@ -118,7 +118,7 @@ public class PageRoomManagementMainController {
         String fxml = "/fxml/PageRoomManagementDetail.fxml" ;
         ArrayList<Room> rooms = SqlConnection.getSqlConnection().selectAllRoom();
         for(int i=0 ; i<rooms.size() ; i++){
-            data_table.add(new RoomManagement(rooms.get(i).getRoom_name(), rooms.get(i).getId_type_room()+"",rooms.get(i).getFloor()+"",new Button("รายละเอียด"),fxml,rooms.get(i)));
+            data_table.add(new RoomManagement(rooms.get(i).getRoom_name(), SqlConnection.getSqlConnection().getStringTypeRoomFromIDRoom(rooms.get(i).getId_type_room())+"",rooms.get(i).getFloor()+"",new Button("รายละเอียด"),fxml,rooms.get(i)));
 
         }
 
@@ -155,7 +155,8 @@ public class PageRoomManagementMainController {
     //ไปหน้าแจ้งชำระจากเมนู
     @FXML
     void handleFeature2Btn(ActionEvent event) throws IOException {
-
+        GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/DebtReminder.fxml"));
+        gridPane.getChildren().setAll(pane);
     }
 
     //ไปหน้าจัดการห้องจากเมนู

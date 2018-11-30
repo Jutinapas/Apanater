@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.RoomManagementDetail;
 import Models.SqlConnection;
+import Models.TypeRoom;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +16,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class PageRoomManagementDetailController {
@@ -25,7 +27,7 @@ public class PageRoomManagementDetailController {
     private TextField textF_name;
 
     @FXML
-    private TextField textF_type;
+    private ComboBox<String> cb_type;
 
     @FXML
     private Spinner<Integer> spinner_floor;
@@ -114,15 +116,24 @@ public class PageRoomManagementDetailController {
         btnX.setVisible(false);
         btnY.setVisible(false);
         textF_name.setVisible(false);
-        textF_type.setVisible(false);
+        cb_type.setVisible(false);
         spinner_floor.setVisible(false);
+
+        ArrayList<TypeRoom> typeRooms = SqlConnection.getSqlConnection().selectAllTypeRoom();
+        ArrayList<String> lst = new ArrayList<>();
+        for(TypeRoom t:typeRooms){
+            lst.add(t.getTypeRoom());
+        }
+        ObservableList<String> data = FXCollections.observableArrayList(lst);
+        cb_type.setItems(data);
     }
 
     @FXML
     public void setEditDetail(String textF,String textT,int s){
         textF_name.setText(textF);
-        textF_type.setText(textT);
+        cb_type.setValue(textT);
         spinner_floor.getValueFactory().setValue(s);
+
 
     }
     @FXML
@@ -208,7 +219,7 @@ public class PageRoomManagementDetailController {
     }
 
     @FXML
-    void BtnDelete(ActionEvent event) {
+    void BtnDelete(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("คอนเฟิร์ม การลบห้อง");
         alert.setHeaderText("คอนเฟิร์ม การลบ");
@@ -217,6 +228,11 @@ public class PageRoomManagementDetailController {
 
         if (action.get() == ButtonType.OK){
             System.out.println("delete");
+            int s = SqlConnection.getSqlConnection().getIDroomByNameRoom(label_nameroom.getText());
+            SqlConnection.getSqlConnection().deleteRoom(s);
+            GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementMain.fxml"));
+            gridPane.getChildren().setAll(pane);
+
         }
 
     }
@@ -226,7 +242,7 @@ public class PageRoomManagementDetailController {
         btnX.setVisible(true);
         btnY.setVisible(true);
         textF_name.setVisible(true);
-        textF_type.setVisible(true);
+        cb_type.setVisible(true);
         spinner_floor.setVisible(true);
         btnEdit.setVisible(false);
         setEditDetail(label_nameroom.getText(),label_typeroom.getText(),Integer.parseInt(label_floor.getText()));
@@ -238,12 +254,12 @@ public class PageRoomManagementDetailController {
         btnY.setVisible(false);
         btnEdit.setVisible(true);
         textF_name.setVisible(false);
-        textF_type.setVisible(false);
+        cb_type.setVisible(false);
         spinner_floor.setVisible(false);
     }
 
     @FXML
-    void BtnY(ActionEvent event) {
+    void BtnY(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("คอนเฟิร์ม การแก้ไขห้อง");
         alert.setHeaderText("คอนเฟิร์ม การแก้ไข");
@@ -252,6 +268,14 @@ public class PageRoomManagementDetailController {
 
         if (action.get() == ButtonType.OK){
             System.out.println("edit");
+            int s = SqlConnection.getSqlConnection().getIDroomByNameRoom(label_nameroom.getText());
+            int t = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(cb_type.getValue());
+            System.out.println(cb_type.getValue());
+            System.out.println(t);
+            SqlConnection.getSqlConnection().updateRoom(s,textF_name.getText(),spinner_floor.getValue(),t);
+            GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementMain.fxml"));
+            gridPane.getChildren().setAll(pane);
+
         }
     }
 
@@ -271,7 +295,8 @@ public class PageRoomManagementDetailController {
     //ไปหน้าแจ้งชำระจากเมนู
     @FXML
     void handleFeature2Btn(ActionEvent event) throws IOException {
-
+        GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/DebtReminder.fxml"));
+        gridPane.getChildren().setAll(pane);
     }
 
     //ไปหน้าจัดการห้องจากเมนู

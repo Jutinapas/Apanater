@@ -1,0 +1,39 @@
+.table-view .table-cell{
+    -fx-font-size: 22px;
+    -fx-table-cell-border-color: #e9faff;
+}
+
+.table-row-cell {
+    -fx-cell-size: 82.5px;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #d3f4ff;
+    -fx-table-cell-border-color: #e9faff;
+}
+
+.table-row-cell:focused {
+    -fx-table-cell-border-color: #e9faff;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #d3f4ff;
+}
+.table-row-cell:selected .text {
+    -fx-fill: black;
+}
+
+#roomTypeCol {
+    -fx-alignment: CENTER-LEFT;
+    -fx-font-size: 24px;
+}
+
+#floorCol {
+    -fx-alignment: CENTER;
+    -fx-font-size: 24px;
+}
+
+#roomNameCol {
+    -fx-alignment: CENTER-LEFT;
+    -fx-font-size: 24px;
+}

@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Feature1Page1Controller">
+<GridPane fx:id="gridPane" alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Feature1Page1Controller">
     <children>
         <Pane prefHeight="800.0" prefWidth="1280.0">
             <children>
@@ -94,7 +94,7 @@
                         </Button>
                     </children>
                 </GridPane>
-            <Label layoutX="234.0" layoutY="14.0" prefHeight="150.0" prefWidth="800.0" text="  ค้นหาห้องว่าง และเพิ่มการจอง">
+            <Label layoutX="245.0" layoutY="14.0" prefHeight="150.0" prefWidth="800.0" text="  ค้นหาห้องว่าง และเพิ่มการจอง">
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -106,22 +106,22 @@
                   <Font name="System Bold" size="48.0" />
                </font>
             </Label>
-            <Button fx:id="monthlyBtn" layoutX="250.0" layoutY="185.0" mnemonicParsing="false" onAction="#handleMonthlyBtn" prefHeight="50.0" prefWidth="200.0" text="แบบรายเดือน">
+            <Button fx:id="monthlyBtn" layoutX="261.0" layoutY="185.0" mnemonicParsing="false" onAction="#handleMonthlyBtn" prefHeight="50.0" prefWidth="200.0" text="แบบรายเดือน">
                <font>
                   <Font size="28.0" />
                </font>
             </Button>
-            <Button fx:id="dailyBtn" layoutX="460.0" layoutY="185.0" mnemonicParsing="false" onAction="#handleDailyBtn" prefHeight="50.0" prefWidth="200.0" text="แบบรายวัน">
+            <Button fx:id="dailyBtn" layoutX="471.0" layoutY="185.0" mnemonicParsing="false" onAction="#handleDailyBtn" prefHeight="50.0" prefWidth="200.0" text="แบบรายวัน">
                <font>
                   <Font size="28.0" />
                </font>
             </Button>
-            <Line endX="850.0" layoutX="350.0" layoutY="150.0" startX="-100.0" />
-            <DatePicker fx:id="fromDatePicker" layoutX="250.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" />
-            <DatePicker fx:id="toDatePicker" disable="true" layoutX="460.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" visible="false" />
-            <ComboBox fx:id="roomTypeBox" layoutX="681.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" promptText="ทุกประเภท" />
-            <ComboBox fx:id="floorBox" layoutX="890.0" layoutY="302.0" prefHeight="50.0" prefWidth="100.0" promptText="ทุกชั้น" />
-            <Button fx:id="searchBtn" layoutX="1011.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleSeachBtn" prefHeight="75.0" prefWidth="190.0" text=" ค้นหาเลย">
+            <Line endX="850.0" layoutX="361.0" layoutY="150.0" startX="-100.0" />
+            <DatePicker fx:id="fromDatePicker" layoutX="261.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" />
+            <DatePicker fx:id="toDatePicker" disable="true" layoutX="471.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" visible="false" />
+            <ComboBox fx:id="roomTypeBox" layoutX="692.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" promptText="ทุกประเภท" />
+            <ComboBox fx:id="floorBox" layoutX="901.0" layoutY="302.0" prefHeight="50.0" prefWidth="100.0" promptText="ทุกชั้น" />
+            <Button fx:id="searchBtn" layoutX="1022.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleSearchBtn" prefHeight="75.0" prefWidth="190.0" text=" ค้นหาเลย">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -133,27 +133,27 @@
                   <Font size="29.0" />
                </font>
             </Button>
-            <Label layoutX="250.0" layoutY="262.0" prefHeight="40.0" prefWidth="200.0" text="วันเข้าพัก">
+            <Label layoutX="261.0" layoutY="262.0" prefHeight="40.0" prefWidth="200.0" text="วันเข้าพัก">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <Label fx:id="toDateLabel" disable="true" layoutX="460.0" layoutY="262.0" prefHeight="40.0" prefWidth="200.0" text="วันย้ายออก" visible="false">
+            <Label fx:id="toDateLabel" disable="true" layoutX="471.0" layoutY="262.0" prefHeight="40.0" prefWidth="200.0" text="วันย้ายออก" visible="false">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <Label layoutX="681.0" layoutY="262.0" prefHeight="40.0" prefWidth="200.0" text="ประเภทห้อง">
+            <Label layoutX="692.0" layoutY="262.0" prefHeight="40.0" prefWidth="200.0" text="ประเภทห้อง">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <Label layoutX="890.0" layoutY="262.0" prefHeight="40.0" prefWidth="100.0" text="ชั้น">
+            <Label layoutX="901.0" layoutY="262.0" prefHeight="40.0" prefWidth="100.0" text="ชั้น">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <TableView fx:id="tableView" layoutX="250.0" layoutY="380.0" prefHeight="380.0" prefWidth="950.0">
+            <TableView fx:id="tableView" layoutX="261.0" layoutY="380.0" prefHeight="380.0" prefWidth="950.0" stylesheets="@../css/tableview.css">
               <columns>
                 <TableColumn fx:id="roomNameCol" editable="false" minWidth="50.0" prefWidth="275.0" text="ชื่อห้อง" />
                 <TableColumn fx:id="roomTypeCol" editable="false" minWidth="50.0" prefWidth="200.0" text="ประเภท" />
@@ -161,13 +161,13 @@
                   <TableColumn fx:id="buttonCol" editable="false" minWidth="50.0" prefWidth="350.0" resizable="false" />
               </columns>
             </TableView>
-            <Label fx:id="numMonthLabel" layoutX="460.0" layoutY="262.0" prefHeight="40.0" prefWidth="200.0" text="จำนวนเดือน">
+            <Label fx:id="numMonthLabel" layoutX="471.0" layoutY="262.0" prefHeight="40.0" prefWidth="200.0" text="จำนวนเดือน">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <TextField fx:id="numMonthField" alignment="CENTER_RIGHT" layoutX="460.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" text="1" />
-            <Label fx:id="errorLabel" layoutX="672.0" layoutY="180.0" prefHeight="75.0" prefWidth="525.0" />
+            <TextField fx:id="numMonthField" alignment="CENTER_RIGHT" layoutX="471.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" text="1" />
+            <Label fx:id="errorLabel" layoutX="683.0" layoutY="180.0" prefHeight="75.0" prefWidth="525.0" />
             </children>
         </Pane>
     </children>

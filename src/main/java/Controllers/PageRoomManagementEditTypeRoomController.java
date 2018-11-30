@@ -174,7 +174,8 @@ public class PageRoomManagementEditTypeRoomController {
     //ไปหน้าแจ้งชำระจากเมนู
     @FXML
     void handleFeature2Btn(ActionEvent event) throws IOException {
-
+        GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/DebtReminder.fxml"));
+        gridPane.getChildren().setAll(pane);
     }
 
     //ไปหน้าจัดการห้องจากเมนู
