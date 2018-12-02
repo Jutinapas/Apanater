@@ -4,9 +4,9 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Feature1Page1Controller">
+<GridPane fx:id="gridPane" alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Feature1Page1Controller">
     <children>
         <Pane prefHeight="800.0" prefWidth="1280.0">
             <children>
@@ -119,8 +119,8 @@
             <Line endX="850.0" layoutX="361.0" layoutY="150.0" startX="-100.0" />
             <DatePicker fx:id="fromDatePicker" layoutX="261.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" />
             <DatePicker fx:id="toDatePicker" disable="true" layoutX="471.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" visible="false" />
-            <ComboBox fx:id="roomTypeBox" layoutX="692.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" promptText="ทุกประเภท" />
-            <ComboBox fx:id="floorBox" layoutX="901.0" layoutY="302.0" prefHeight="50.0" prefWidth="100.0" promptText="ทุกชั้น" />
+            <ComboBox fx:id="roomTypeBox" layoutX="692.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" />
+            <ComboBox fx:id="floorBox" layoutX="901.0" layoutY="302.0" prefHeight="50.0" prefWidth="100.0" />
             <Button fx:id="searchBtn" layoutX="1022.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleSearchBtn" prefHeight="75.0" prefWidth="190.0" text=" ค้นหาเลย">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -166,8 +166,8 @@
                   <Font size="22.0" />
                </font>
             </Label>
-            <TextField fx:id="numMonthField" alignment="CENTER_RIGHT" layoutX="471.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" text="1" />
             <Label fx:id="errorLabel" layoutX="683.0" layoutY="180.0" prefHeight="75.0" prefWidth="525.0" />
+            <Spinner fx:id="numMonthField" layoutX="471.0" layoutY="302.0" prefHeight="50.0" prefWidth="200.0" />
             </children>
         </Pane>
     </children>

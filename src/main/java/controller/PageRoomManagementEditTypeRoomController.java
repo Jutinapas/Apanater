@@ -1,8 +1,8 @@
-package Controllers;
+package controller;
 
 
-import Models.SqlConnection;
-import Models.TypeRoom;
+import model.SqlConnection;
+import model.TypeRoom;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -58,8 +58,8 @@ public class PageRoomManagementEditTypeRoomController {
 
     @FXML
     public  void initialize() {
-        setSpinnerMoth(1,100000);
-        setSpinnerDay(1,100000);
+        setSpinnerMoth(0,Double.MAX_VALUE);
+        setSpinnerDay(0,Double.MAX_VALUE);
 //        setData("sex room",3500,300);
 
     }
@@ -83,6 +83,9 @@ public class PageRoomManagementEditTypeRoomController {
         SpinnerValueFactory<Double> valueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(min, max, min);
         spinnerMonth.setValueFactory(valueFactory);
         spinnerMonth.setEditable(true);
+        TextFormatter formatter = new TextFormatter(valueFactory.getConverter(), valueFactory.getValue());
+        spinnerMonth.getEditor().setTextFormatter(formatter);
+        valueFactory.valueProperty().bindBidirectional(formatter.valueProperty());
     }
 
     @FXML
@@ -90,6 +93,9 @@ public class PageRoomManagementEditTypeRoomController {
         SpinnerValueFactory<Double> valueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(min, max, min);
         spinnerDay.setValueFactory(valueFactory);
         spinnerDay.setEditable(true);
+        TextFormatter formatter = new TextFormatter(valueFactory.getConverter(), valueFactory.getValue());
+        spinnerDay.getEditor().setTextFormatter(formatter);
+        valueFactory.valueProperty().bindBidirectional(formatter.valueProperty());
     }
 
     @FXML

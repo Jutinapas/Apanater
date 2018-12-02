@@ -1,6 +1,6 @@
-package Controllers;
+package controller;
 
-import Models.SqlConnection;
+import model.SqlConnection;
 import javafx.event.ActionEvent;
 
 import javafx.fxml.FXML;
@@ -44,8 +44,8 @@ public class PageRoomManagementTypeAddNewTypeController {
 
     @FXML
     public  void initialize() {
-        setSpinnerMoth(1,100000);
-        setSpinnerDay(1,100000);
+        setSpinnerMoth(0,Double.MAX_VALUE);
+        setSpinnerDay(0,Double.MAX_VALUE);
 
     }
 
@@ -54,6 +54,10 @@ public class PageRoomManagementTypeAddNewTypeController {
         SpinnerValueFactory<Double> valueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(min, max, min);
         spinnerMonth.setValueFactory(valueFactory);
         spinnerMonth.setEditable(true);
+        spinnerMonth.getValueFactory().setValue(0.00);
+        TextFormatter formatter = new TextFormatter(valueFactory.getConverter(), valueFactory.getValue());
+        spinnerMonth.getEditor().setTextFormatter(formatter);
+        valueFactory.valueProperty().bindBidirectional(formatter.valueProperty());
     }
 
     @FXML
@@ -61,6 +65,10 @@ public class PageRoomManagementTypeAddNewTypeController {
         SpinnerValueFactory<Double> valueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(min, max, min);
         spinnerDay.setValueFactory(valueFactory);
         spinnerDay.setEditable(true);
+        spinnerDay.getValueFactory().setValue(0.00);
+        TextFormatter formatter = new TextFormatter(valueFactory.getConverter(), valueFactory.getValue());
+        spinnerDay.getEditor().setTextFormatter(formatter);
+        valueFactory.valueProperty().bindBidirectional(formatter.valueProperty());
     }
 
     @FXML

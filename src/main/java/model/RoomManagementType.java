@@ -1,7 +1,7 @@
-package Models;
+package model;
 
 
-import Controllers.PageRoomManagementInfoTypeRoomController;
+import controller.PageRoomManagementInfoTypeRoomController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

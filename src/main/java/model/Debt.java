@@ -1,4 +1,4 @@
-package Models;
+package model;
 
 public class Debt {
     private int id_debt;

@@ -1,6 +1,6 @@
-package Controllers;
+package controller;
 
-import Models.*;
+import model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -15,7 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class DebtReminderController{
 

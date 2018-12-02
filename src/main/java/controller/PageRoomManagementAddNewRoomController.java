@@ -1,6 +1,6 @@
-package Controllers;
-import Models.SqlConnection;
-import Models.TypeRoom;
+package controller;
+import model.SqlConnection;
+import model.TypeRoom;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,7 +50,7 @@ public class PageRoomManagementAddNewRoomController {
 
     @FXML
     public  void initialize() {
-        setSpinner(1,8);
+        setSpinner(0,Integer.MAX_VALUE);
         setComboBox();
 
     }
@@ -60,6 +60,11 @@ public class PageRoomManagementAddNewRoomController {
     void setSpinner(int min,int max){
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, min);
         spinner.setValueFactory(valueFactory);
+        spinner.setEditable(true);
+        spinner.getValueFactory().setValue(1);
+        TextFormatter formatter = new TextFormatter(valueFactory.getConverter(), valueFactory.getValue());
+        spinner.getEditor().setTextFormatter(formatter);
+        valueFactory.valueProperty().bindBidirectional(formatter.valueProperty());
 
     }
 

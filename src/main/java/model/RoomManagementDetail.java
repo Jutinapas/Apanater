@@ -1,7 +1,7 @@
-package Models;
+package model;
 
 
-import Controllers.PageRoomManagementDetailController;
+import controller.PageRoomManagementDetailController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,8 +17,9 @@ public class RoomManagementDetail {
     String date_star, date_end,type,user,phone;
     Button cancel;
     String fxml;
+    Reservation reservation;
 
-    public RoomManagementDetail(String date_star, String date_end, String type, String user, String phone, Button cancel, String fxml) {
+    public RoomManagementDetail(String date_star, String date_end, String type, String user, String phone, Button cancel, String fxml,Reservation reservation) {
         this.date_star = date_star;
         this.date_end = date_end;
         this.type = type;
@@ -26,6 +27,8 @@ public class RoomManagementDetail {
         this.phone = phone;
         this.cancel = cancel;
         this.fxml = fxml;
+        this.reservation = reservation;
+
 
 
        cancel.setOnAction(e -> {
@@ -36,23 +39,22 @@ public class RoomManagementDetail {
            Optional<ButtonType> action = alert.showAndWait();
 
            if (action.get() == ButtonType.OK){
-               System.out.println("cancel");
-//               Button b = (Button) e.getSource();
-//
-//               Stage stage = (Stage) b.getScene().getWindow();
-//
-//               FXMLLoader loader = new FXMLLoader(getClass().getResource(this.fxml));
-//               try {
-//                   stage.setScene(new Scene((Parent) loader.load(), 1280, 800));
-//
-////                PageRoomManagementDetailController controller = loader.getController();
-////                controller.setData(getName(),getType(),Integer.parseInt(getFloor()));
-//
-//                   stage.show();
-//
-//               } catch (IOException e1) {
-//                   e1.printStackTrace();
-//               }
+
+               SqlConnection.getSqlConnection().deleteReservationById(this.reservation.getId_reservation());
+
+               Button b = (Button) e.getSource();
+
+               Stage stage = (Stage) b.getScene().getWindow();
+
+               FXMLLoader loader = new FXMLLoader(getClass().getResource(this.fxml));
+               try {
+                   stage.setScene(new Scene((Parent) loader.load(), 1280, 800));
+
+                   stage.show();
+
+               } catch (IOException e1) {
+                   e1.printStackTrace();
+               }
            }
 
 

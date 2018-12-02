@@ -1,6 +1,4 @@
-package Models;
-
-import java.time.LocalDate;
+package model;
 
 public class Reservation {
     private int id_reservation;
@@ -55,4 +53,5 @@ public class Reservation {
     public String getStatus() {
         return status;
     }
+
 }

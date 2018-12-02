@@ -1,18 +1,18 @@
-package Models;
+package model;
 
 public class TypeRoom {
 
     private int idTypeRoom ;
     private  String typeRoom;
-    private double rentPerDay ;
     private  double rentPerMonth;
+    private double rentPerDay ;
     private String status;
 
-    public TypeRoom(int idTypeRoom, String typeRoom, double rentPerDay, double rentPerMonth, String status) {
+    public TypeRoom(int idTypeRoom, String typeRoom, double rentPerMonth, double rentPerDay, String status) {
         this.idTypeRoom = idTypeRoom;
         this.typeRoom = typeRoom;
-        this.rentPerDay = rentPerDay;
         this.rentPerMonth = rentPerMonth;
+        this.rentPerDay = rentPerDay;
         this.status = status;
     }
 
@@ -35,4 +35,5 @@ public class TypeRoom {
     public String getStatus() {
         return status;
     }
+
 }

@@ -1,4 +1,4 @@
-import Models.SqlConnection;
+import model.SqlConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,7 +18,6 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         SqlConnection.getSqlConnection().createAllTable();
-
         launch(args);
     }
 
