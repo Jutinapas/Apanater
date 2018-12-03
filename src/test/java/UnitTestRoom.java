@@ -11,55 +11,72 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class UnitTestRoom {
-//    ArrayList<Room> Rooms,RoomsCheck;
-//    int id,idType;
-//
-//    @BeforeEach
-//    void init(){
-//        SqlConnection.getSqlConnection().createRoomTable();
-//        SqlConnection.getSqlConnection().createTypeRoomTable();
-//        ArrayList<TypeRoom> typeRooms = SqlConnection.getSqlConnection().selectAllTypeRoom();
-//
-//        SqlConnection.getSqlConnection().insertTypeRoom("test"+(typeRooms.size()+1),1D,2D);
-//        idType = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom("test"+(typeRooms.size()+1));
-//
-//        Rooms = SqlConnection.getSqlConnection().selectAllRoom();
-//        SqlConnection.getSqlConnection().insertRoom("test"+(Rooms.size()+1),idType,2);
-//
-//        id = SqlConnection.getSqlConnection().getIDroomByNameRoom("test"+(Rooms.size()+1));
-//        RoomsCheck = SqlConnection.getSqlConnection().selectAllRoom();
-//
-//
-//    }
-//
-//
-//    //Room
-//    @Test
-//    void insertRoom() {
-//
-//        ArrayList<Room> RoomsUpdate = SqlConnection.getSqlConnection().selectAllRoom();
-//        assertEquals(true,RoomsUpdate.size()>Rooms.size());
-//    }
-//
-//
-//    @Test
-//    void updateRoom() {
-//        SqlConnection.getSqlConnection().updateRoom(id,"test"+(Rooms.size()+1)+"update",2,idType);
-//        assertEquals(id,SqlConnection.getSqlConnection().getIDroomByNameRoom("test"+(Rooms.size()+1)+"update"));
-//    }
-//
-//
-//    @Test
-//    void deleteRoom() {
-//        SqlConnection.getSqlConnection().deleteRoom(id);
-//        ArrayList<Room> RoomsDelete = SqlConnection.getSqlConnection().selectAllRoom();
-//        assertEquals(true ,RoomsDelete.size() < RoomsCheck.size());
-//    }
-//
-//
-//    @Test
-//    void getRoom() {
-//        Room room = SqlConnection.getSqlConnection().getRoomByID(id);
-//        assertEquals("test"+(Rooms.size()+1),room.getRoom_name());
-//    }
+    String nameType;
+
+    @BeforeEach
+    void init(){
+        SqlConnection.getSqlConnection().createRoomTable();
+        SqlConnection.getSqlConnection().createTypeRoomTable();
+        ArrayList<TypeRoom> typeRooms = SqlConnection.getSqlConnection().selectAllTypeRoom();
+        nameType = "typeRooms"+(typeRooms.size()+1);
+        SqlConnection.getSqlConnection().insertTypeRoom(nameType,1D,2D);
+    }
+
+
+    //Room
+    @Test
+    void insertRoom() {
+        int idTypeRoom = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(nameType);
+        ArrayList<Room> RoomsOld = SqlConnection.getSqlConnection().selectAllRoom();
+        String name = "room"+(RoomsOld.size()+1);
+        SqlConnection.getSqlConnection().insertRoom(name,idTypeRoom,2);
+        ArrayList<Room> RoomsNew = SqlConnection.getSqlConnection().selectAllRoom();
+        assertEquals(RoomsOld.size()+1,RoomsNew.size());
+    }
+
+
+    @Test
+    void updateRoom() {
+        int idTypeRoom = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(nameType);
+        ArrayList<Room> RoomsOld = SqlConnection.getSqlConnection().selectAllRoom();
+        String name = "room"+(RoomsOld.size()+1);
+        SqlConnection.getSqlConnection().insertRoom(name,idTypeRoom,3);
+
+        int id = SqlConnection.getSqlConnection().getIDroomByNameRoom(name);
+        String nameNew = name+"update";
+        SqlConnection.getSqlConnection().updateRoom(id,nameNew,3,idTypeRoom);
+
+        assertEquals(id,SqlConnection.getSqlConnection().getIDroomByNameRoom(nameNew));
+    }
+
+
+    @Test
+    void deleteRoom() {
+        int idTypeRoom = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(nameType);
+        ArrayList<Room> RoomsOld = SqlConnection.getSqlConnection().selectAllRoom();
+        String name = "room"+(RoomsOld.size()+1);
+
+        SqlConnection.getSqlConnection().insertRoom(name,idTypeRoom,4);
+
+        ArrayList<Room> RoomsOld2 = SqlConnection.getSqlConnection().selectAllRoom();
+        int id = SqlConnection.getSqlConnection().getIDroomByNameRoom(name);
+
+        SqlConnection.getSqlConnection().deleteRoom(id);
+
+        ArrayList<Room> RoomsDelete = SqlConnection.getSqlConnection().selectAllRoom();
+        assertEquals(RoomsOld2.size()-1 ,RoomsDelete.size());
+    }
+
+
+    @Test
+    void getRoom() {
+        int idTypeRoom = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(nameType);
+        ArrayList<Room> RoomsOld = SqlConnection.getSqlConnection().selectAllRoom();
+        String name = "room"+(RoomsOld.size()+1);
+
+        SqlConnection.getSqlConnection().insertRoom(name,idTypeRoom,5);
+        int id = SqlConnection.getSqlConnection().getIDroomByNameRoom(name);
+        Room room = SqlConnection.getSqlConnection().getRoomByID(id);
+        assertEquals(name,room.getRoom_name());
+    }
 }

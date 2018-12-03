@@ -439,6 +439,27 @@ public class SqlConnection {
 
     }
 
+    public int getIdReservationByName(String in,String out, int idRoom){
+
+        Connection c = connect();
+        int subName =0;
+        try {
+            if (c != null) {
+                String query = "Select id_reserve from Reservation where date_check_in = '"+in+"' and date_check_out = '"+out+"' and id_room = '"+idRoom+"'";
+                Statement s = c.createStatement();
+                ResultSet rs = s.executeQuery(query);
+
+                subName = rs.getInt(1);
+                c.close();
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+        return subName;
+
+    }
+
     public int getIDTyperoomFromNameTypeRoom(String n){
         Connection c = connect();
         int subName =0;
@@ -929,6 +950,30 @@ public class SqlConnection {
             if (c != null) {
 
                 String query = "Select * from Debt";
+                Statement s = c.createStatement();
+                ResultSet rs = s.executeQuery(query);
+
+                while (rs.next()) {
+                    r.add(new Debt(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getDouble(4),rs.getString(5)));
+
+                }
+                c.close();
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+        return r;
+
+    }
+
+    public ArrayList<Debt> selectActiveDebt(){
+
+        Connection c = connect();
+        ArrayList<Debt> r = new ArrayList<>();
+        try {
+            if (c != null) {
+
+                String query = "Select * from Debt where status = 'active' ";
                 Statement s = c.createStatement();
                 ResultSet rs = s.executeQuery(query);
 
