@@ -1122,6 +1122,26 @@ public class SqlConnection {
         return id;
     }
 
+    public int getRecentRoom() {
+        int id = 0;
+        Connection c = connect();
+        try {
+            if (c != null) {
+
+                String query = "SELECT * FROM Room ORDER BY id_type_room DESC LIMIT 1";
+                Statement statement = c.createStatement();
+                ResultSet rs = statement.executeQuery(query);
+                id = rs.getInt(1);
+                c.close();
+
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+        return id;
+    }
+
+
     public int getIDDebtFromIDReserve(int id){
         Connection c = connect();
         int idDebt =0;

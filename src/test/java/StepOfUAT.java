@@ -6,6 +6,10 @@ import model.Room;
 import model.SqlConnection;
 import model.TypeRoom;
 
+import java.time.LocalDate;
+import java.util.Random;
+import java.util.SortedSet;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StepOfUAT {
@@ -89,7 +93,7 @@ public class StepOfUAT {
         assertEquals(room_size_5 + 1, ins.selectAllRoom().size());
     }
 
-    // 5 Edit Room
+    // 6 Edit Room
     @Given("^มีห้องชื่อ (.*) ชั้น (\\d+) และประเภทเป็น(.*)")
     public void given_edit_room(String name, int floor, String type) {
         ins.insertRoom(name, ins.getIDTyperoomFromNameTypeRoom(type), floor);
@@ -104,6 +108,26 @@ public class StepOfUAT {
         assertEquals(name, new_room.getRoom_name());
         assertEquals(floor, new_room.getFloor());
         assertEquals(ins.getIDTyperoomFromNameTypeRoom(type), new_room.getId_type_room());
+    }
+
+    // 8 Searching
+    int id1;
+    int set_size;
+    int all_room;
+    @Given("^มีห้อง (.*) โดยมีการจองของห้อง 101 แบบ(.*) ตั้งแต่วันที่ (.*) เป็นเวลา (\\d+) เดือน ลูกค้าคือ (.*) เบอร์โทรคือ (.*)")
+    public void given_searching(String name1, String type, String in, int month, String name, String tel) {
+        ins.insertRoom(name1, ins.getRecentTypeRoom(), 1);
+        id1 = ins.getRecentRoom();
+        all_room = ins.selectAllRoom().size();
+        ins.insertReservation(LocalDate.parse(in), LocalDate.parse(in).plusMonths(month), id1, type, name, tel);
+    }
+    @When("^กดค้นหาการจองตั้งแต่วันที่ (.*) แบบรายเดือนเป็นเวลา (\\d+) เดือน")
+    public void when_searching(String in, int month) {
+         set_size = ins.selectIDRoomThatReservationNotInRange(LocalDate.parse(in), LocalDate.parse(in).plusMonths(1)).size();
+    }
+    @Then("^ห้องที่ว่างลดลง")
+    public void then_serching() {
+        assertEquals(all_room - 1, all_room - set_size);
     }
 
 }
