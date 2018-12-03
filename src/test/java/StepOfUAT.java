@@ -36,5 +36,22 @@ public class StepOfUAT {
         assertEquals(daily, new_type.getRentPerDay());
     }
 
+    // 3 Edit Type Room
+    @Given("^มีประเภทห้องที่ชื่อประเภทเป็น (.*) และราคาค่าเช่ารายเดือนเป็น (\\d+) ราคาค่าเช่ารายวันเป็น (\\d+)")
+    public void given_edit_type_room(String name, double monthly, double daily) {
+        SqlConnection.getSqlConnection().insertTypeRoom(name, monthly, daily);
+    }
+    @When("^กดแก้ไขประเภทห้องจากประเภทห้อง(.*) จากนั้นใส่ชื่อประเภทเป็น (.*) และราคาค่าเช่ารายเดือนเป็น (\\d+) ราคาค่าเช่ารายวันเป็น (\\d+) แล้วกดตกลง")
+    public void when_edit_type_room(String name1, String name, double monthly, double daily) {
+        int id = SqlConnection.getSqlConnection().getRecentTypeRoom();
+        SqlConnection.getSqlConnection().updateTypeRoom(id, name, monthly, daily);
+    }
+    @Then("^ประเภทห้องเดิมถูกมีชื่อประเภทคือ (.*) และมีราคาค่าเช่ารายเดือนคือ (\\d+) ราคาค่าเช่ารายวันคือ (\\d+)")
+    public void then_edit_type_room(String name, double monthly, double daily) {
+        TypeRoom new_type = SqlConnection.getSqlConnection().getTypeRoomByID(SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(name));
+        assertEquals(new_type.getTypeRoom(), name);
+        assertEquals(new_type.getRentPerMonth(), monthly);
+        assertEquals(new_type.getRentPerDay(), daily);
+    }
 
 }

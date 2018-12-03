@@ -1103,6 +1103,25 @@ public class SqlConnection {
         return id;
     }
 
+    public int getRecentTypeRoom() {
+        int id = 0;
+        Connection c = connect();
+        try {
+            if (c != null) {
+
+                String query = "SELECT * FROM TypeRoom ORDER BY id_type_room DESC LIMIT 1";
+                Statement statement = c.createStatement();
+                ResultSet rs = statement.executeQuery(query);
+                id = rs.getInt(1);
+                c.close();
+
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+        return id;
+    }
+
     public int getIDDebtFromIDReserve(int id){
         Connection c = connect();
         int idDebt =0;
@@ -1122,59 +1141,5 @@ public class SqlConnection {
         return idDebt;
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-    public static ArrayList<Course> selectRow(){
-        Connection c = connect();
-        ArrayList<Course> h = new ArrayList<>();
-        try {
-            if (c != null) {
-                String query = "Select * from Course";
-                Statement s = c.createStatement();
-                ResultSet rs = s.executeQuery(query);
-                while (rs.next()){
-                    h.add(new Course(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7)));
-                }
-                c.close();
-            }
-        }catch (SQLException e){
-            System.out.println(e);
-        }
-        return h;
-
-    }
-    */
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
