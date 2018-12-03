@@ -2,6 +2,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import model.SqlConnection;
+import model.TypeRoom;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,11 +26,14 @@ public class StepOfUAT {
     // 2 Create Type Room
     @When("^กดเพิ่มประเภท จากนั้นใส่ชื่อประเภทเป็น (.*) และราคาค่าเช่ารายเดือนเป็น (\\d+) ราคาค่าเช่ารายวันเป็น (\\d+) แล้วกดตกลง")
     public void when_create_type_room(String name, double monthly, double daily) {
-
+        SqlConnection.getSqlConnection().insertTypeRoom(name, monthly, daily);
     }
-    @Then("^มีประเภทห้องใหม่ และจำนวนประเภทห้องเพิ่มขึ้น (\\d+)")
-    public void then_create_type_room(int increase) {
-
+    @Then("^มีประเภทห้องใหม่ชื่อประเภทเป็น (.*) และราคาค่าเช่ารายเดือนเป็น (\\d+) ราคาค่าเช่ารายวันเป็น (\\d+)")
+    public void then_create_type_room(String name, double monthly, double daily) {
+        TypeRoom new_type = SqlConnection.getSqlConnection().getTypeRoomByID(SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(name));
+        assertEquals(name, new_type.getTypeRoom());
+        assertEquals(monthly, new_type.getRentPerMonth());
+        assertEquals(daily, new_type.getRentPerDay());
     }
 
 
