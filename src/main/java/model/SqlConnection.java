@@ -919,7 +919,6 @@ public class SqlConnection {
         try {
             if (c != null) {
 
-
                 String query = "Select * from Room where status = 'active' and id_room = '"+Integer.toString(idRoom)+"'";
                 Statement s = c.createStatement();
                 ResultSet rs = s.executeQuery(query);
@@ -985,6 +984,52 @@ public class SqlConnection {
         return null;
     }
 
+    //get Reservation by phoneNumber
+    public int getIDReservationByPhoneNumber(String phoneNumber){
+        Connection c = connect();
+
+        try {
+            if (c != null) {
+
+
+                String query = "Select * from Reservation where status = 'active' and phone_number = '"+phoneNumber+"'";
+                Statement s = c.createStatement();
+                ResultSet rs = s.executeQuery(query);
+                int r = rs.getInt(1);
+
+                c.close();
+                return r;
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+
+    public ArrayList<Reservation> selectAllReservation(){
+
+        Connection c = connect();
+        ArrayList<Reservation> r = new ArrayList<>();
+        try {
+            if (c != null) {
+                String query = "Select * from Reservation where status = 'active'";
+                Statement s = c.createStatement();
+                ResultSet rs = s.executeQuery(query);
+                while (rs.next()){
+
+                    r.add(new Reservation(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4),rs.getString(5)
+                            ,rs.getString(6),rs.getString(7),rs.getString(8)));
+                }
+                c.close();
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+        return r;
+    }
+
     //get ArraysList Debt
 
     public ArrayList<Debt> selectAllFromDebt(){
@@ -994,7 +1039,7 @@ public class SqlConnection {
         try {
             if (c != null) {
 
-                String query = "Select * from Debt where status = 'active'";
+                String query = "Select * from Debt";
                 Statement s = c.createStatement();
                 ResultSet rs = s.executeQuery(query);
 
@@ -1011,28 +1056,43 @@ public class SqlConnection {
 
     }
 
-    public ArrayList<Debt> selectAllFromDebtNotPaid(){
+    public void updateStatusInDebt(int idDebt){
 
         Connection c = connect();
-        ArrayList<Debt> r = new ArrayList<>();
+
         try {
             if (c != null) {
+                String query = "Update Debt Set status = ? Where id_debt = ?";
+                PreparedStatement ps = c.prepareStatement(query);
+                ps.setString(1, "active");
+                ps.setInt(2,idDebt);
+                ps.executeUpdate();
+                ps.close();
 
-                String query = "Select * from Debt where status = 'unactive'";
+                c.close();
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+    }
+
+    public int getIDDebtFromIDReservationAndDatePayDebt(int id, String n){
+        Connection c = connect();
+        int idDebt =0;
+        try {
+            if (c != null) {
+                String query = "Select id_debt from Debt where date_pay_debt= '"+n+"' and id_reserve = '"+id+"'"  ;
                 Statement s = c.createStatement();
                 ResultSet rs = s.executeQuery(query);
 
-                while (rs.next()) {
-                    r.add(new Debt(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getDouble(4),rs.getString(5)));
-
-                }
+                idDebt = rs.getInt(1);
                 c.close();
             }
         }catch (SQLException e){
             System.out.println(e);
         }
 
-        return r;
+        return idDebt;
 
     }
 
@@ -1058,6 +1118,8 @@ public class SqlConnection {
             System.out.println(e);
         }
     }
+
+
 
 
 
@@ -1125,6 +1187,52 @@ public class SqlConnection {
         }
         return id;
     }
+
+    public void insertDebt(int idReserve, String datePayDebt, Double debtBalance){
+        Connection c = connect();
+        int count =0;
+        try {
+            if (c != null) {
+                if (count==0) {
+                    String query2 = "Insert into Debt(id_reserve,date_pay_debt,debt_balance,status) values(?,?,?,?)";
+                    PreparedStatement p = c.prepareStatement(query2);
+                    p.setInt(1, idReserve);
+                    p.setString(2, datePayDebt);
+                    p.setDouble(3, debtBalance);
+                    p.setString(4,"unactive");
+                    p.executeUpdate();
+                }
+                c.close();
+
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+    }
+
+    public int getIDDebtFromIDReserve(int id){
+        Connection c = connect();
+        int idDebt =0;
+        try {
+            if (c != null) {
+                String query = "Select id_debt from Debt where id_reserve = '"+id+"'";
+                Statement s = c.createStatement();
+                ResultSet rs = s.executeQuery(query);
+
+                idDebt= rs.getInt(1);
+                c.close();
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+        return idDebt;
+
+    }
+
+
+
+
 
 
 
