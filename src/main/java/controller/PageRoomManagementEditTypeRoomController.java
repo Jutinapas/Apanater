@@ -107,17 +107,25 @@ public class PageRoomManagementEditTypeRoomController {
 
     @FXML
     void BtnCorrect(ActionEvent event) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("คอนเฟิร์ม การแก้ไขประภทห้อง");
-        alert.setHeaderText("คอนเฟิร์ม การแก้ไข");
-        alert.setContentText("คุณแน่ใจที่จะแก้ไข ประเภทห้อง: "+tf.getText()+" รายวัน: "+spinnerDay.getValue()+" รายเดือน: "+spinnerMonth.getValue()+" ?");
-        Optional<ButtonType> action = alert.showAndWait();
+        if(tf.getText().length() > 0){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("คอนเฟิร์ม การแก้ไขประภทห้อง");
+            alert.setHeaderText("คอนเฟิร์ม การแก้ไข");
+            alert.setContentText("คุณแน่ใจที่จะแก้ไข ประเภทห้อง: "+tf.getText()+" รายวัน: "+spinnerDay.getValue()+" รายเดือน: "+spinnerMonth.getValue()+" ?");
+            Optional<ButtonType> action = alert.showAndWait();
 
-        if (action.get() == ButtonType.OK){
-            SqlConnection.getSqlConnection().updateTypeRoom(tr.getIdTypeRoom(),tf.getText(),spinnerMonth.getValue(),spinnerDay.getValue());
-            GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementTypeAll.fxml"));
-            gridPane.getChildren().setAll(pane);
-            clear();
+            if (action.get() == ButtonType.OK){
+                SqlConnection.getSqlConnection().updateTypeRoom(tr.getIdTypeRoom(),tf.getText(),spinnerMonth.getValue(),spinnerDay.getValue());
+                GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementTypeAll.fxml"));
+                gridPane.getChildren().setAll(pane);
+                clear();
+            }
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ไม่สามารถแก้ไขประเภทห้องได้");
+            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบก่อน");
+            alert.showAndWait();
         }
 
     }
