@@ -16,6 +16,13 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
+
 public class DebtReminderController{
 
     @FXML
@@ -74,10 +81,10 @@ public class DebtReminderController{
 
     public static ObservableList<DebtReminder> noData = FXCollections.observableArrayList();
     public static ObservableList<DebtReminder> yesData = FXCollections.observableArrayList();
+    int amountMonth;
 
     @FXML
     public void initialize() throws IOException {
-        System.out.println("initialize");
         noData.clear();
         yesData.clear();
         initTable();
@@ -103,22 +110,195 @@ public class DebtReminderController{
     }
 
     private void loadData() throws IOException {
-        System.out.println("Load data!");
         ObservableList<DebtReminder> data_table = FXCollections.observableArrayList();
-        for(int i=0 ; i<5 ; i++){
-            data_table.add(new DebtReminder("date"+i, "roomName"+i,"customerName"+i,
-                    "phoneNumber"+i, "roomType"+i, i+1+".00", new Button(" มียอดค้างชำระ", new ImageView(imageNo))));
-        }
-//        data_table.add(new DebtReminder("15/10/2018","Hans", "Muster", "084-253-9753" , "รายเดือน", "3300.00", new Button(" ชำระเงินแล้ว", new ImageView(imageOk))));
-//        data_table.add(new DebtReminder("15/10/2018","Ruth", "Mueller", "089-432-2287", "รายเดือน", "4500.00",new Button(" ชำระเงินแล้ว", new ImageView(imageOk))));
-//        data_table.add(new DebtReminder("15/10/2018","Heinz", "Kurz", "090-432-2218","รายเดือน", "3300.00", new Button(" มียอดค้างชำระ", new ImageView(imageNo))));
-//        data_table.add(new DebtReminder("15/10/2018","Cornelia", "Meier", "088-404-4444", "รายเดือน", "850.00",new Button(" มียอดค้างชำระ", new ImageView(imageNo))));
-//        data_table.add(new DebtReminder("15/10/2018","Werner", "Meyer", "088-880-8787", "รายเดือน", "1250.00",new Button(" มียอดค้างชำระ", new ImageView(imageNo))));
-//        data_table.add(new DebtReminder("15/10/2018","Lydia", "Kunz", "086-963-3636", "รายเดือน", "1900.00",new Button(" มียอดค้างชำระ", new ImageView(imageNo))));
-//        data_table.add(new DebtReminder("15/10/2018","Anna", "Best", "091-103-3102", "รายเดือน", "5000.00",new Button(" ชำระเงินแล้ว", new ImageView(imageOk))));
-//        data_table.add(new DebtReminder("15/10/2018","Stefan", "Meier", "090-567-8910", "รายเดือน", "1750.00",new Button(" มียอดค้างชำระ", new ImageView(imageNo))));
-//        data_table.add(new DebtReminder("15/10/2018","Martin", "Mueller", "087-723-1090", "รายเดือน", "3500.00",new Button(" มียอดค้างชำระ", new ImageView(imageNo))));
 
+        ArrayList<Reservation> reservation = SqlConnection.getSqlConnection().selectAllReservation();
+        ArrayList<Debt> debtsForCheck = SqlConnection.getSqlConnection().selectAllFromDebt();
+
+        //ส่วนเพิ่มข้อมูลลง Table Debt
+        for (int i = 0; i < reservation.size() ; i++) {
+
+            int idReservation = reservation.get(i).getId_reservation();
+
+            //เช็คว่าใน Table Debt มี id_reserve นี้แล้วหรือยัง เพื่อที่เวลา Load Data จะไม่เขียนข้อมูลเดิมลง Database
+            if (SqlConnection.getSqlConnection().getIDDebtFromIDReserve(idReservation) != 0){
+                continue;
+            }
+
+            //วันที่ check in จาก Table Reservation
+            String[] dateMonthYearCheckIn = reservation.get(i).getDate_check_in().split("/");
+            String dateCheckIn = dateMonthYearCheckIn[0];
+            String monthCheckIn = dateMonthYearCheckIn[1];
+            String yearCheckIn = dateMonthYearCheckIn[2];
+            if (dateCheckIn.charAt(0) == '0'){
+                dateCheckIn = dateCheckIn.charAt(1)+"";
+            }
+            if (monthCheckIn.charAt(0) == '0'){
+                monthCheckIn = monthCheckIn.charAt(1)+"";
+            }
+
+            //วันที่ check out จาก Table Reservation
+            String[] dateMonthYearCheckOut = reservation.get(i).getDate_check_out().split("/");
+            String dateCheckOut = dateMonthYearCheckOut[0];
+            String monthCheckOut = dateMonthYearCheckOut[1];
+            String yearCheckOut = dateMonthYearCheckOut[2];
+            if (dateCheckOut.charAt(0) == '0'){
+                dateCheckOut = dateCheckOut.charAt(1)+"";
+            }
+            if (monthCheckOut.charAt(0) == '0'){
+                monthCheckOut = monthCheckOut.charAt(1)+"";
+            }
+
+            //จำนวนเดือนที่เข้าพัก ใช้ method countAmountOfMonth
+            amountMonth = countAmountOfMonth(yearCheckIn, yearCheckOut, monthCheckIn, monthCheckOut);
+
+            //วันที่ชำระประจำเดือนของหอพัก
+            String datePayMoney =SqlConnection.getSqlConnection().selectDatePayMoney();
+
+            //เอาไว้เรียก rent_per_month จาก Table TypeRoom
+            int idRoom = reservation.get(i).getId_room();
+            Room rooms = SqlConnection.getSqlConnection().getRoomByID(idRoom);
+
+            int idTypeRoom = rooms.getId_type_room();
+            TypeRoom typeRoom = SqlConnection.getSqlConnection().getTypeRoomByID(idTypeRoom);
+
+            if (reservation.get(i).getType_reserve().equals("รายวัน")){
+                if (Integer.parseInt(yearCheckIn) == Integer.parseInt(yearCheckOut) && (Integer.parseInt(monthCheckIn) == Integer.parseInt(monthCheckOut))) {
+                    double rent = (Integer.parseInt(dateCheckOut)-Integer.parseInt(dateCheckIn)) * typeRoom.getRentPerDay();
+                    SqlConnection.getSqlConnection().insertDebt(reservation.get(i).getId_reservation(), reservation.get(i).getDate_check_in(),  rent);
+                }
+                if (Integer.parseInt(yearCheckIn) == Integer.parseInt(yearCheckOut) && (Integer.parseInt(monthCheckIn)!= Integer.parseInt(monthCheckOut))){
+                    double rent = ((30-(Integer.parseInt(dateCheckIn)-1)) + Integer.parseInt(dateCheckOut)) * typeRoom.getRentPerDay();
+                    SqlConnection.getSqlConnection().insertDebt(reservation.get(i).getId_reservation(), reservation.get(i).getDate_check_in(),  rent);
+                }
+                if (Integer.parseInt(yearCheckOut) - Integer.parseInt(yearCheckIn) == 1){
+                    double rent = ((30-(Integer.parseInt(dateCheckIn)-1)) + Integer.parseInt(dateCheckOut)) * typeRoom.getRentPerDay();
+                    SqlConnection.getSqlConnection().insertDebt(reservation.get(i).getId_reservation(), reservation.get(i).getDate_check_in(),  rent);
+                }
+                continue;
+            }
+
+            //เดือนถัดไปจากเดือนที่เข้าพัก กับ ปีที่เข้าพัก
+            int month = Integer.parseInt(monthCheckIn)+1;
+            int year = Integer.parseInt(yearCheckIn);
+
+            //ลูปที่ใช้ insert data สู่ Table Debt โดยมีจำนวน record เท่่ากับ amountMonth(จำนวเดือนที่เข้าพัก)
+            for (int j = 0; j < amountMonth ; j++) {
+                double rentPerMonth = typeRoom.getRentPerMonth();
+
+                //แค่เช็คว่าถ้าเดือนมากกว่า 12 ก็คือขึ้น เดือน1 ของปีถัดไป
+                if (month > 12){
+                    month = 1;
+                    year ++;
+                }
+
+                //วันที่ชำระจากหน้าจัดการหอพัก
+                LocalDate dueDate = LocalDate.of(year,month, Integer.parseInt(datePayMoney));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                String formatDateTime = dueDate.format(formatter);
+
+                month ++;
+
+                //เดือนแรกที่เข้าพัก
+                if (j==0){
+                    int numberDate = (30 - Integer.parseInt(dateCheckIn))+1;
+                    if (amountMonth == 1 || numberDate == 30){
+                        SqlConnection.getSqlConnection().insertDebt(reservation.get(i).getId_reservation(), formatDateTime,  rentPerMonth);
+                    }else{
+                        double rent = (rentPerMonth/30);
+                        rentPerMonth = Math.rint(rent*numberDate);
+                        DecimalFormat df = new DecimalFormat();
+                        df.setMaximumFractionDigits(2);
+                        rentPerMonth = Double.parseDouble(df.format(rentPerMonth));
+                        SqlConnection.getSqlConnection().insertDebt(reservation.get(i).getId_reservation(), formatDateTime,  rentPerMonth);
+                    }
+                    //เดือนสุดท้ายที่เข้าพัก
+                }else if(j == amountMonth-1){
+                    double rent = (rentPerMonth/30);
+                    if (Integer.parseInt(dateCheckOut) != 1){
+                        rentPerMonth += Math.rint(rent*(Integer.parseInt(dateCheckOut)-1));
+                        DecimalFormat df = new DecimalFormat();
+                        df.setMaximumFractionDigits(2);
+                        rentPerMonth = Double.parseDouble(df.format(rentPerMonth));
+                        SqlConnection.getSqlConnection().insertDebt(reservation.get(i).getId_reservation(), formatDateTime,  rentPerMonth);
+                    }else{
+                        SqlConnection.getSqlConnection().insertDebt(reservation.get(i).getId_reservation(), formatDateTime,  rentPerMonth);
+                    }
+                }else{
+                    //เดือนที่่ไม่ใช่เดือนแรกและเดือนสุดท้ายที่เข้าพัก
+                    SqlConnection.getSqlConnection().insertDebt(reservation.get(i).getId_reservation(), formatDateTime,  rentPerMonth);
+                }
+            }
+
+        }
+
+        ArrayList<Debt> debts = SqlConnection.getSqlConnection().selectAllFromDebt();
+
+        for(int i=0 ; i< debts.size() ; i++){
+//            System.out.println("record "+(i+1)+" status = "+debts.get(i).getStatus());
+
+            int idReserve = debts.get(i).getId_reserve();
+            Reservation reservations = SqlConnection.getSqlConnection().getReservationByID(idReserve);
+
+            int idRoom = reservations.getId_room();
+            Room rooms = SqlConnection.getSqlConnection().getRoomByID(idRoom);
+
+            int idTypeRoom = rooms.getId_type_room();
+            TypeRoom typeRoom = SqlConnection.getSqlConnection().getTypeRoomByID(idTypeRoom);
+
+            //เช็ควันเดือนปี ณ ปัจจุบัน
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String formatDateTime = now.format(formatter);
+            String[] dateMonthYearCurrent = formatDateTime.split("/");
+            String dateCurrent = dateMonthYearCurrent[0];
+            String monthCurrent = dateMonthYearCurrent[1];
+            String yearCurrent = dateMonthYearCurrent[2];
+            if (dateCurrent.charAt(0) == '0'){
+                dateCurrent = dateCurrent.charAt(1)+"";
+            }
+            if (monthCurrent.charAt(0) == '0'){
+                monthCurrent = monthCurrent.charAt(1)+"";
+            }
+
+            //เช็ควันเดือนปีประจำค่างวดนั้นๆ
+            String[] dateMonthYearPayDebt = debts.get(i).getDate_pay_debt().split("/");
+            String datePayDebt = dateMonthYearPayDebt[0];
+            String monthPayDebt = dateMonthYearPayDebt[1];
+            String yearPayDebt = dateMonthYearPayDebt[2];
+            if (datePayDebt.charAt(0) == '0'){
+                datePayDebt = datePayDebt.charAt(1)+"";
+            }
+            if (monthPayDebt.charAt(0) == '0'){
+                monthPayDebt = monthPayDebt.charAt(1)+"";
+            }
+
+            //กรณีปีมากกว่า
+            boolean yearMoreThan = (Integer.parseInt(yearCurrent)+543) > Integer.parseInt(yearPayDebt);
+            //กรณีปีเท่ากัน เดือนมากกว่า
+            boolean yearEqualMonthMoreThan =  ((Integer.parseInt(yearCurrent)+543) == Integer.parseInt(yearPayDebt))
+                    && (Integer.parseInt(monthCurrent) > (Integer.parseInt(monthPayDebt)));
+            //กรณีปีเท่ากัน เดือนเท่ากัน วันที่มากกว่าเหรือท่ากับ
+            boolean yearEqualMonthEqualDayMoreThanEqual = (Integer.parseInt(yearCurrent)+543) == Integer.parseInt(yearPayDebt) &&
+                    Integer.parseInt(monthCurrent) == Integer.parseInt(monthPayDebt)
+                    && Integer.parseInt(dateCurrent) >= Integer.parseInt(datePayDebt);
+
+            //เช็คจาก3กรณีอันใดอันหนึ่งเป็นจริง ข้อมูลนั้นจะได้ add เข้า tableview
+            if (yearMoreThan || yearEqualMonthMoreThan || yearEqualMonthEqualDayMoreThanEqual){
+                if (debts.get(i).getStatus().equals("active")) {
+                    //จะเป็นปุ่มชำระแล้ว(สีเขยีว) ถ้า status เป็น active
+                    data_table.add(new DebtReminder(debts.get(i).getDate_pay_debt(), rooms.getRoom_name(), reservations.getName_guest(), reservations.getPhone_number()
+                            , typeRoom.getTypeRoom(), debts.get(i).getDebt_balance() + "", new Button(" ชำระเงินแล้ว", new ImageView(imageOk))));
+
+                }else{
+                    //จะเป็นปุ่มมียอดค้างชำระ(สีแดง) ถ้า status เป็น unactive
+                    data_table.add(new DebtReminder(debts.get(i).getDate_pay_debt(), rooms.getRoom_name(), reservations.getName_guest(), reservations.getPhone_number()
+                            , typeRoom.getTypeRoom(), debts.get(i).getDebt_balance() + "", new Button(" มียอดค้างชำระ", new ImageView(imageNo))));
+                }
+            }
+        }
+
+        //ไว้แยกข้อมูลที่ชำระแล้วกับยังไม่ได้ชำระ
         for (int i = 0; i < data_table.size() ; i++) {
             String[] s = (data_table.get(i).getStatus().toString().split(" "));
             if (s[1].equals("มียอดค้างชำระ'")){
@@ -191,6 +371,21 @@ public class DebtReminderController{
         // 5. Add sorted (and filtered) data to the table.
         tableDebtReminder.setItems(sortedData);
 
+    }
+
+    //หาจำนวนเดือนที่เข้าพัก
+    private int countAmountOfMonth(String yearCheckIn, String yearCheckOut, String monthCheckIn, String monthCheckOut){
+        if(Integer.parseInt(yearCheckIn) == Integer.parseInt(yearCheckOut)){
+            amountMonth = Integer.parseInt(monthCheckOut) - Integer.parseInt(monthCheckIn);
+        }
+        if(Integer.parseInt(yearCheckOut) - Integer.parseInt(yearCheckIn) == 1){
+            amountMonth = (12-(Integer.parseInt(monthCheckIn))) + Integer.parseInt(monthCheckOut);
+        }
+        if(Integer.parseInt(yearCheckOut) - Integer.parseInt(yearCheckIn) > 1){
+            amountMonth = (12-(Integer.parseInt(monthCheckIn)) +
+                    ((Integer.parseInt(yearCheckOut)-((Integer.parseInt(yearCheckIn)+1)))*12)+Integer.parseInt(monthCheckOut));
+        }
+        return amountMonth;
     }
 
     @FXML
