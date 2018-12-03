@@ -110,15 +110,27 @@ public class StepOfUAT {
         assertEquals(ins.getIDTyperoomFromNameTypeRoom(type), new_room.getId_type_room());
     }
 
+    // 7 Delete Room
+    int room_size_7;
+    @When("^กดลบห้องจากห้อง (.*)")
+    public void when_delete_room(String name) {
+        room_size_7 = ins.selectAllRoom().size();
+        ins.deleteRoom(ins.getIDroomByNameRoom(name));
+    }
+    @Then("^ห้องถูกลบ และจำนวนห้องลดลง")
+    public void then_delete_room() {
+        assertEquals(room_size_7 - 1, ins.selectAllRoom().size());
+    }
+
     // 8 Searching
     int id1;
     int set_size;
-    int all_room;
+    int room_size_8;
     @Given("^มีห้อง (.*) โดยมีการจองของห้อง 101 แบบ(.*) ตั้งแต่วันที่ (.*) เป็นเวลา (\\d+) เดือน ลูกค้าคือ (.*) เบอร์โทรคือ (.*)")
     public void given_searching(String name1, String type, String in, int month, String name, String tel) {
         ins.insertRoom(name1, ins.getRecentTypeRoom(), 1);
         id1 = ins.getRecentRoom();
-        all_room = ins.selectAllRoom().size();
+        room_size_8 = ins.selectAllRoom().size();
         ins.insertReservation(LocalDate.parse(in), LocalDate.parse(in).plusMonths(month), id1, type, name, tel);
     }
     @When("^กดค้นหาการจองตั้งแต่วันที่ (.*) แบบรายเดือนเป็นเวลา (\\d+) เดือน")
@@ -127,7 +139,7 @@ public class StepOfUAT {
     }
     @Then("^ห้องที่ว่างลดลง")
     public void then_serching() {
-        assertEquals(all_room - 1, all_room - set_size);
+        assertEquals(room_size_8 - 1, room_size_8 - set_size);
     }
 
 }
