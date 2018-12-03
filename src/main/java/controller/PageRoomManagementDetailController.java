@@ -100,7 +100,7 @@ public class PageRoomManagementDetailController {
         setSpinner_floor(1,Integer.MAX_VALUE);
         initTable();
         setStyleCols();
-        loadData();
+//        loadData();
     }
 
 
@@ -269,22 +269,30 @@ public class PageRoomManagementDetailController {
 
     @FXML
     void BtnY(ActionEvent event) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("คอนเฟิร์ม การแก้ไขห้อง");
-        alert.setHeaderText("คอนเฟิร์ม การแก้ไข");
-        alert.setContentText("คุณแน่ใจที่จะแก้ไข ห้อง: "+label_nameroom.getText()+" ?");
-        Optional<ButtonType> action = alert.showAndWait();
+        if(textF_name.getText().length() > 0){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("คอนเฟิร์ม การแก้ไขห้อง");
+            alert.setHeaderText("คอนเฟิร์ม การแก้ไข");
+            alert.setContentText("คุณแน่ใจที่จะแก้ไข ห้อง: "+label_nameroom.getText()+" ?");
+            Optional<ButtonType> action = alert.showAndWait();
 
-        if (action.get() == ButtonType.OK){
-            System.out.println("edit");
-            int s = SqlConnection.getSqlConnection().getIDroomByNameRoom(label_nameroom.getText());
-            int t = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(cb_type.getValue());
+            if (action.get() == ButtonType.OK){
+//                System.out.println("edit");
+                int s = SqlConnection.getSqlConnection().getIDroomByNameRoom(label_nameroom.getText());
+                int t = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(cb_type.getValue());
 //            System.out.println(cb_type.getValue());
 //            System.out.println(t);
-            SqlConnection.getSqlConnection().updateRoom(s,textF_name.getText(),spinner_floor.getValue(),t);
-            GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementMain.fxml"));
-            gridPane.getChildren().setAll(pane);
+                SqlConnection.getSqlConnection().updateRoom(s,textF_name.getText(),spinner_floor.getValue(),t);
+                GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementMain.fxml"));
+                gridPane.getChildren().setAll(pane);
 
+            }
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ไม่สามารถแก้ไขห้องได้");
+            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบก่อน");
+            alert.showAndWait();
         }
     }
 

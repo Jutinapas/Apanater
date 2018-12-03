@@ -299,75 +299,12 @@ public class SqlConnection {
         return subName;
     }
 
-
-
-
-
-    public boolean checkThisTypeRoomIsAlreadyExist(String typeRoom){
-        Connection c = connect();
-        try {
-            if (c != null) {
-                String query = "Select type_room from TypeRoom";
-                Statement s = c.createStatement();
-                ResultSet rs = s.executeQuery(query);
-                while (rs.next()){
-                    if (rs.getString(1).equals(typeRoom)){
-                    return true;
-                    }
-                }
-                c.close();
-
-            }
-        }catch (SQLException e){
-            System.out.println(e);
-        }
-        return false;
-
-    }
-
-    public boolean checkThisRoomIsAlreadyExist(String nameRoom){
-        Connection c = connect();
-        try {
-            if (c != null) {
-                String query = "Select room_name from Room";
-                Statement s = c.createStatement();
-                ResultSet rs = s.executeQuery(query);
-                while (rs.next()){
-                    if (rs.getString(1).equals(nameRoom)){
-                        return true;
-                    }
-                }
-                c.close();
-
-            }
-        }catch (SQLException e){
-            System.out.println(e);
-        }
-        return false;
-
-    }
-
     //เพิ่มชนิดห้องพัก
     public void insertTypeRoom(String typeRoom ,double rentPerMonth,double rentPerDay){
         Connection c = connect();
 
-        int count =0;
         try {
             if (c != null) {
-
-                if (count==0){
-                    String query2 ="Insert into TypeRoom(type_room,rent_per_month,rent_per_day,status) values(?,?,?,?)";
-                    PreparedStatement p = c.prepareStatement(query2);
-                    p.setString(1,typeRoom);
-                    p.setDouble(2,rentPerMonth);
-                    p.setDouble(3,rentPerDay);
-                    p.setString(4,"active");
-                    p.executeUpdate();
-                }else {
-
-                    if (checkThisTypeRoomIsAlreadyExist(typeRoom)){
-                        System.out.println("error this type room already exist");
-                    }else {
                         String query2 ="Insert into TypeRoom(type_room,rent_per_month,rent_per_day,status) values(?,?,?,?)";
                         PreparedStatement p = c.prepareStatement(query2);
                         p.setString(1,typeRoom);
@@ -376,9 +313,6 @@ public class SqlConnection {
                         p.setString(4,"active");
                         p.executeUpdate();
 
-                    }
-
-                }
                 c.close();
 
             }
@@ -465,29 +399,9 @@ public class SqlConnection {
     //เพิ่มห้องพัก
     public void insertRoom(String nameRoom,int id_type_Room,int floor){
         Connection c = connect();
-        int count =0;
         try {
             if (c != null) {
-                String query = "Select count(id_room)  from Room";
-                Statement s = c.createStatement();
-                ResultSet rs = s.executeQuery(query);
-                while (rs.next()){
-                    count = rs.getInt(1);
-                }
 
-                if (count==0){
-                    String query2 ="Insert into Room(room_name,id_type_room,floor,status) values(?,?,?,?)";
-                    PreparedStatement p = c.prepareStatement(query2);
-                    p.setString(1,nameRoom);
-                    p.setInt(2,id_type_Room);
-                    p.setInt(3,floor);
-                    p.setString(4,"active");
-                    p.executeUpdate();
-                }else {
-
-                    if (checkThisRoomIsAlreadyExist(nameRoom)){
-                        System.out.println("error this name room already exist");
-                    }else {
                         String query2 ="Insert into Room(room_name,id_type_room,floor,status) values(?,?,?,?)";
                         PreparedStatement p = c.prepareStatement(query2);
                         p.setString(1,nameRoom);
@@ -495,8 +409,6 @@ public class SqlConnection {
                         p.setInt(3,floor);
                         p.setString(4,"active");
                         p.executeUpdate();
-                    }
-                }
                 c.close();
 
             }

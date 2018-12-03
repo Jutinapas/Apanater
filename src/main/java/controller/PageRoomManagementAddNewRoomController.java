@@ -88,24 +88,36 @@ public class PageRoomManagementAddNewRoomController {
 
     @FXML
     void BtnCorrect(ActionEvent event) throws IOException{
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("คอนเฟิร์ม การเพิ่มห้องใหม่");
-        alert.setHeaderText("คอนเฟิร์ม การเพิ่มห้อง");
-        alert.setContentText("คุณแน่ใจที่จะเพิ่ม ห้อง: "+tf.getText()+" ประเถทห้อง: "+cb.getValue()+" ชั้น: "+spinner.getValue()+" ?");
-        Optional<ButtonType> action = alert.showAndWait();
 
-        if (action.get() == ButtonType.OK){
-            //update data to database
-            int t = 0;
-            for (TypeRoom i : typeRooms){
-                if (i.getTypeRoom().equals(cb.getValue())){
-                    t = i.getIdTypeRoom();
+        if(tf.getText().length() > 0 && cb.getValue() != null){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("คอนเฟิร์ม การเพิ่มห้องใหม่");
+            alert.setHeaderText("คอนเฟิร์ม การเพิ่มห้อง");
+            alert.setContentText("คุณแน่ใจที่จะเพิ่ม ห้อง: "+tf.getText()+" ประเถทห้อง: "+cb.getValue()+" ชั้น: "+spinner.getValue()+" ?");
+            Optional<ButtonType> action = alert.showAndWait();
+
+            if (action.get() == ButtonType.OK){
+                //update data to database
+                int t = 0;
+                for (TypeRoom i : typeRooms){
+                    if (i.getTypeRoom().equals(cb.getValue())){
+                        t = i.getIdTypeRoom();
+                    }
                 }
+                SqlConnection.getSqlConnection().insertRoom(tf.getText(),t,spinner.getValue());
+                GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementMain.fxml"));
+                gridPane.getChildren().setAll(pane);
             }
-            SqlConnection.getSqlConnection().insertRoom(tf.getText(),t,spinner.getValue());
-            GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementMain.fxml"));
-            gridPane.getChildren().setAll(pane);
+
         }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ไม่สามารถเพิ่มห้องได้");
+            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบก่อน");
+            alert.showAndWait();
+
+        }
+
 
     }
 
