@@ -444,13 +444,25 @@ public class Feature1Page1Controller {
 
     private void setResults(ArrayList<Room> list, SortedSet<Integer> roomIDs) {
         rooms.clear();
-        int index = 0;
-        Iterator<Integer> iterator = roomIDs.iterator();
 
-        while (iterator.hasNext()) {
-            if (iterator.next() == list.get(index).getId_room()) {
-                list.remove(index);
-            } else index++;
+        if (roomIDs.size() > 0) {
+
+            int index = 0;
+            int id = roomIDs.first();
+            Iterator<Integer> iterator = roomIDs.iterator();
+
+            while (iterator.hasNext()) {
+                System.out.println(index);
+                if (id < list.get(index).getId_room())
+                    id = iterator.next();
+                else if (id == list.get(index).getId_room()) {
+                    list.remove(index);
+                    id = iterator.next();
+                } else if (id > list.get(index).getId_room()) {
+                    index++;
+                }
+            }
+
         }
 
         for (Room room : list) {

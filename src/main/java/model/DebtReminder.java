@@ -10,9 +10,11 @@ import java.util.Optional;
 
 public class DebtReminder {
     private String dueDate, roomName, customerName, phoneNumber, roomType, debt;
+    private int id;
     private Button status;
 
-    public DebtReminder(String dueDate, String roomName, String customerName, String phoneNumber, String roomType, String debt, Button status) {
+    public DebtReminder(int id, String dueDate, String roomName, String customerName, String phoneNumber, String roomType, String debt, Button status) {
+        this.id = id;
         this.dueDate = dueDate;
         this.roomName = roomName;
         this.customerName = customerName;
@@ -29,13 +31,16 @@ public class DebtReminder {
                 alert.setTitle("ยืนยันการชำระเงิน");
                 alert.setHeaderText("ลูกค้าท่านนี้ได้ชำระเงินค่าหอพักแล้วใช่หรือไม่");
                 alert.setContentText("ชื่อห้อง : "+this.roomName+ "\nชื่อลูกค้า : "+this.customerName
-                        + "\nประเภท : "+this.roomType + "\nจำนวนเงิน : " + this.debt +" บาท"
+                        + "\nเบอร์โทร : "+this.phoneNumber
+                        + "\nประเภทห้อง : "+this.roomType + "\nจำนวนเงิน : " + this.debt +" บาท"
                         + "\nวันที่ครบกำหนดชำระ : "+ this.dueDate);
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    // จ่ายแล้วยอดค้างชำระเป็น 0 บาท
-                    // this.setDebt("0.00");
+
+                    //update status ใน Table Debt
+                    SqlConnection.getSqlConnection().updateStatusInDebt(this.id);
+
                     status.setText(" ชำระเงินแล้ว");
                     status.setGraphic(new ImageView("/images/yes.png"));
                     DebtReminderController.noData.remove(this);
@@ -48,11 +53,19 @@ public class DebtReminder {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("ยืนยันการชำระเงิน");
                 alert.setHeaderText("ลูกค้าท่านนีได้ชำระค่าเช่างวดนี้แล้ว");
-                alert.setContentText("");
+                alert.setContentText("จำนวนเงิน : "+ this.debt +" บาท");
 
                 alert.showAndWait();
             }
         });
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDueDate() {

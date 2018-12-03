@@ -1,8 +1,6 @@
 package controller;
 
-import model.RoomManagementDetail;
-import model.SqlConnection;
-import model.TypeRoom;
+import model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +16,7 @@ import javafx.scene.layout.GridPane;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 
 public class PageRoomManagementDetailController {
     @FXML
@@ -92,11 +91,12 @@ public class PageRoomManagementDetailController {
     private TableColumn<RoomManagementDetail, Button> col_cancel;
 
 
-    @FXML
+
+
+     @FXML
     public  void initialize() throws IOException {
 
         setVisible();
-
         setSpinner_floor(1,Integer.MAX_VALUE);
         initTable();
         setStyleCols();
@@ -105,10 +105,13 @@ public class PageRoomManagementDetailController {
 
 
     @FXML
-    public void setData(String textF,String textT,int s){
+    public void setData(String textF, String textT, int s) throws IOException {
         label_nameroom.setText(textF);
         label_typeroom.setText(textT);
         label_floor.setText(""+s);
+        loadData();
+
+
     }
 
     @FXML
@@ -213,9 +216,12 @@ public class PageRoomManagementDetailController {
 
     private void loadData() throws IOException {
         ObservableList<RoomManagementDetail> data_table = FXCollections.observableArrayList();
-        String fxml = "/fxml/PageRoomManagementDetail.fxml" ;
-        for(int i=0 ; i<7 ; i++){
-            data_table.add(new RoomManagementDetail("date"+i, "date"+i,"type"+i,"user"+i,"phone"+i,new Button("ยกเลิกการจอง"),fxml));
+        int id = SqlConnection.getSqlConnection().getIDroomByNameRoom(label_nameroom.getText());
+        ArrayList<Reservation> reservations = new ArrayList<>();
+        reservations = SqlConnection.getSqlConnection().selectReservationWithRoom(id);
+        String fxml = "/fxml/PageRoomManagementMain.fxml" ;
+        for(int i=0 ; i<reservations.size() ; i++){
+            data_table.add(new RoomManagementDetail(reservations.get(i).getDate_check_in()+"",reservations.get(i).getDate_check_out()+"",reservations.get(i).getType_reserve(),reservations.get(i).getName_guest()+"",reservations.get(i).getPhone_number()+"",new Button("ยกเลิกการจอง"),fxml,reservations.get(i)));
         }
 
         table_detail.setItems(data_table);
