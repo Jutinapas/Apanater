@@ -2,6 +2,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import model.Room;
 import model.SqlConnection;
 import model.TypeRoom;
 
@@ -86,6 +87,23 @@ public class StepOfUAT {
     @Then("^มีห้องใหม่ และจำนวนห้องเพิ่มขึ้น")
     public void then_create_room() {
         assertEquals(room_size_5 + 1, ins.selectAllRoom().size());
+    }
+
+    // 5 Edit Room
+    @Given("^มีห้องชื่อ (.*) ชั้น (\\d+) และประเภทเป็น(.*)")
+    public void given_edit_room(String name, int floor, String type) {
+        ins.insertRoom(name, ins.getIDTyperoomFromNameTypeRoom(type), floor);
+    }
+    @When("^กดแก้ไขห้องจาก ห้อง (.*) จากนั้นใส่ชื่อห้องเป็น (.*) ชั้น (\\d+) และประเภทเป็น(.*) แล้วกดตกลง")
+    public void when_edit_room(String name1, String name2, int floor, String type) {
+        ins.updateRoom(ins.getIDroomByNameRoom(name1), name2, floor, ins.getIDTyperoomFromNameTypeRoom(type));
+    }
+    @Then("^ห้องเดิมถูกแก้ไขโดยมีชื่อห้องเป็น (.*) ชั้น (\\d+) และประเภทเป็น(.*)")
+    public void then_edit_room(String name, int floor, String type) {
+        Room new_room = ins.getRoomByID(ins.getIDroomByNameRoom(name));
+        assertEquals(name, new_room.getRoom_name());
+        assertEquals(floor, new_room.getFloor());
+        assertEquals(ins.getIDTyperoomFromNameTypeRoom(type), new_room.getId_type_room());
     }
 
 }
