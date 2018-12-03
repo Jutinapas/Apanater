@@ -142,4 +142,25 @@ public class StepOfUAT {
         assertEquals(room_size_8 - 1, room_size_8 - set_size);
     }
 
+    // 9 - 10 Reserve
+    int reserve_size;
+    @Given("^มีห้อง (.*)")
+    public void given_reserve(String name) {
+        ins.insertRoom(name, ins.getRecentTypeRoom(), 2);
+    }
+    @When("^กดเพิ่มการจองจากห้อง (.*) แบบ(.*)เป็นเวลา (\\d+) เดือน ตั้งแต่วันที่ (.*) โดยลูกค้าคือ (.*) และเบอร์โทรศัพท์เป็น (.*)")
+    public void when_reserve_monthly(String room, String type, int month, String in, String name, String tel) {
+        reserve_size = ins.selectReservationWithRoom(ins.getRecentRoom()).size();
+        ins.insertReservation(LocalDate.parse(in), LocalDate.parse(in).plusMonths(month), ins.getIDroomByNameRoom(room), type, name, tel);
+    }
+    @When("^กดเพิ่มการจองจากห้อง (.*) แบบ(.*) ตั้งแต่วันที่ (.*) ถึง (.*) โดยลูกค้าคือ (.*) และเบอร์โทรศัพท์เป็น (.*)")
+    public void when_reserve_daily(String room, String type, String in, String out, String name, String tel) {
+        reserve_size = ins.selectReservationWithRoom(ins.getIDroomByNameRoom(room)).size();
+        ins.insertReservation(LocalDate.parse(in), LocalDate.parse(out), ins.getIDroomByNameRoom(room), type, name, tel);
+    }
+    @Then("^มีการจองใหม่ และจำนวนการจองของห้อง (.*) เพิ่มขึ้น")
+    public void then_reserve(String room) {
+        assertEquals(reserve_size + 1, ins.selectReservationWithRoom(ins.getIDroomByNameRoom(room)).size());
+    }
+
 }
