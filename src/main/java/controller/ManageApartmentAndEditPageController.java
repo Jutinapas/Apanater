@@ -112,19 +112,13 @@ public class ManageApartmentAndEditPageController {
         SpinnerValueFactory<Integer> dateValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,m.getDays(),Integer.parseInt(SqlConnection.getSqlConnection().selectDatePayMoney()));
         list_day.setValueFactory(dateValueFactory);
 
-
-
-
-
     }
-
 
     //ตกลงการจัดการหอพัก
     @FXML
     void acceptEdit(ActionEvent event){
         String date_we_choose_to_edit = list_day.getValue().toString();
         String name_apartment_edit_textfield = name_apartment_edit.getText();
-
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Edit Apartment details");
@@ -139,22 +133,13 @@ public class ManageApartmentAndEditPageController {
             initialize();
         }
 
-
-
-
-
-
     }
-
 
     //ยกเลิกการจัดการหอพัก
     @FXML
     void cancelEdit(ActionEvent event){
         initialize();
     }
-
-
-
 
 
 }
