@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class StepOfUAT {
 
-
     SqlConnection ins;
     @Before
     public void setup() {
@@ -65,7 +64,6 @@ public class StepOfUAT {
         assertEquals(new_type.getRentPerDay(), daily);
     }
 
-
     // 4 Delete Type Room
     int type_room_size_4;
     @When("^กดลบประเภทห้องจากประเภทห้อง(.*)")
@@ -78,6 +76,16 @@ public class StepOfUAT {
         assertEquals(type_room_size_4 - 1, ins.selectAllTypeRoom().size());
     }
 
-    
+    // 5 Create Room
+    int room_size_5;
+    @When("^กดเพิ่มห้อง จากนั้นใส่ชื่อห้องเป็น (.*) ชั้น (\\d+) และประเภทเป็น(.*) แล้วกดตกลง")
+    public void when_create_room(String name, int floor, String type) {
+        room_size_5 = ins.selectAllRoom().size();
+        ins.insertRoom(name, ins.getIDTyperoomFromNameTypeRoom(type), floor);
+    }
+    @Then("^มีห้องใหม่ และจำนวนห้องเพิ่มขึ้น")
+    public void then_create_room() {
+        assertEquals(room_size_5 + 1, ins.selectAllRoom().size());
+    }
 
 }
