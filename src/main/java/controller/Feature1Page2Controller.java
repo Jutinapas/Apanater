@@ -85,17 +85,6 @@ public class Feature1Page2Controller {
             this.status = new SimpleStringProperty(reservation.getStatus());
         }
 
-        public ReserveRecord(SimpleStringProperty id_reserve, SimpleStringProperty date_check_in, SimpleStringProperty date_check_out, SimpleStringProperty id_room, SimpleStringProperty type_reserve, SimpleStringProperty name_guest, SimpleStringProperty phone_number, SimpleStringProperty status) {
-            this.id_reserve = id_reserve;
-            this.date_check_in = date_check_in;
-            this.date_check_out = date_check_out;
-            this.id_room = id_room;
-            this.type_reserve = type_reserve;
-            this.name_guest = name_guest;
-            this.phone_number = phone_number;
-            this.status = status;
-        }
-
         public String getId_reserve() {
             return id_reserve.get();
         }
@@ -165,13 +154,15 @@ public class Feature1Page2Controller {
                 roomTypeLabel.setText(SqlConnection.getSqlConnection().getTypeRoomByID(room.getId_type_room()).getTypeRoom());
                 floorLabel.setText(room.getFloor() + "");
 
-                for (Reservation reservation: SqlConnection.getSqlConnection().selectReservationWithRoom(room.getId_room()))
+                for (Reservation reservation: SqlConnection.getSqlConnection().selectReservationWithRoom(room.getId_room())) {
+                    System.out.println(reservation.getName_guest());
                     records.add(new ReserveRecord(reservation));
+                }
             }
         });
 
-        dateInCol.setCellValueFactory(new PropertyValueFactory<ReserveRecord, String>("date_in"));
-        dateOutCol.setCellValueFactory(new PropertyValueFactory<ReserveRecord, String>("date_out"));
+        dateInCol.setCellValueFactory(new PropertyValueFactory<ReserveRecord, String>("date_check_in"));
+        dateOutCol.setCellValueFactory(new PropertyValueFactory<ReserveRecord, String>("date_check_out"));
         reserveTypeCol.setCellValueFactory(new PropertyValueFactory<ReserveRecord, String>("type_reserve"));
         nameCol.setCellValueFactory(new PropertyValueFactory<ReserveRecord, String>("name_guest"));
         telCol.setCellValueFactory(new PropertyValueFactory<ReserveRecord, String>("phone_number"));

@@ -452,7 +452,6 @@ public class Feature1Page1Controller {
             Iterator<Integer> iterator = roomIDs.iterator();
 
             while (iterator.hasNext()) {
-                System.out.println(index);
                 if (id < list.get(index).getId_room())
                     id = iterator.next();
                 else if (id == list.get(index).getId_room()) {
