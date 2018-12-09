@@ -379,13 +379,18 @@ public class DBConnector {
 
                 PreparedStatement ps = c.prepareStatement(query);
                 ps.setString(1,"unactive");
-               ps.setInt(2,idTypeRoom);
+                ps.setInt(2,idTypeRoom);
                 ps.executeUpdate();
                 ps.close();
+
+                String query2 = "UPDATE Room SET status = ? WHERE id_type_room =?";
+                PreparedStatement ps2 = c.prepareStatement(query);
+                ps2.setString(1, "unactive");
+                ps2.setInt(2, idTypeRoom);
+                ps2.executeUpdate();
+                ps2.close();
+
                 c.close();
-
-
-
             }
         }catch (SQLException e){
             System.out.println(e);
@@ -653,7 +658,7 @@ public class DBConnector {
 
         return r;
     }
-    public void deleteReservationById(int id){
+    public void updateReservationById(int id){
 
         Connection c = connect();
 
@@ -666,6 +671,14 @@ public class DBConnector {
                 ps.setInt(2,id);
                 ps.executeUpdate();
                 ps.close();
+
+                String query2 = "UPDATE DEBT SET status = ? WHERE id_reserve = ?";
+                PreparedStatement ps2 = c.prepareStatement(query);
+                ps2.setString(1, "canceled");
+                ps2.setInt(2, id);
+                ps2.executeUpdate();
+                ps2.close();
+
                 c.close();
             }
         }catch (SQLException e){
@@ -849,11 +862,8 @@ public class DBConnector {
             if (c != null) {
 
                 String query = "Select * from Room where status = 'active' and id_room = '"+Integer.toString(idRoom)+"'";
-                Statement s = c.createStatement();
-                ResultSet rs = s.executeQuery(query);
+                ResultSet rs = c.createStatement().executeQuery(query);
                 Room r = new Room(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5));
-
-
                 c.close();
                 return r;
             }
@@ -896,12 +906,9 @@ public class DBConnector {
         try {
             if (c != null) {
 
-
                 String query = "Select * from Reservation where status = 'active' and id_reserve = '"+Integer.toString(idReserve)+"'";
-                Statement s = c.createStatement();
-                ResultSet rs = s.executeQuery(query);
+                ResultSet rs = c.createStatement().executeQuery(query);
                 Reservation r = new Reservation(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
-
 
                 c.close();
                 return r;

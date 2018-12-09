@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.scene.image.ImageView;
 import model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +14,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -89,12 +92,12 @@ public class PageRoomManagementDetailController {
     @FXML
     private TableColumn<RoomManagementDetail, Button> col_cancel;
 
-
+    ObservableList<RoomManagementDetail> data_table;
 
 
      @FXML
     public  void initialize() throws IOException {
-
+        data_table = FXCollections.observableArrayList();
         setVisible();
         setSpinner_floor(1,Integer.MAX_VALUE);
         initTable();
@@ -214,13 +217,13 @@ public class PageRoomManagementDetailController {
     }
 
     private void loadData() throws IOException {
-        ObservableList<RoomManagementDetail> data_table = FXCollections.observableArrayList();
+
         int id = DBConnector.getDBConnector().getIDroomByNameRoom(label_nameroom.getText());
-        ArrayList<Reservation> reservations = new ArrayList<>();
+        ArrayList<Reservation> reservations;
         reservations = DBConnector.getDBConnector().selectReservationWithRoom(id);
         String fxml = "/fxml/PageRoomManagementMain.fxml" ;
         for(int i=0 ; i<reservations.size() ; i++){
-            data_table.add(new RoomManagementDetail(reservations.get(i).getDate_check_in()+"",reservations.get(i).getDate_check_out()+"",reservations.get(i).getType_reserve(),reservations.get(i).getName_guest()+"",reservations.get(i).getPhone_number()+"",new Button("ยกเลิกการจอง"),fxml,reservations.get(i)));
+            data_table.add(new RoomManagementDetail(reservations.get(i).getId_reservation(), reservations.get(i).getDate_check_in()+"",reservations.get(i).getDate_check_out()+"",reservations.get(i).getType_reserve(),reservations.get(i).getName_guest()+"",reservations.get(i).getPhone_number()+"",new Button("ยกเลิกการจอง"),fxml,reservations.get(i)));
         }
 
         table_detail.setItems(data_table);
@@ -236,6 +239,10 @@ public class PageRoomManagementDetailController {
 //            System.out.println("delete");
             int s = DBConnector.getDBConnector().getIDroomByNameRoom(label_nameroom.getText());
             DBConnector.getDBConnector().deleteRoom(s);
+
+            for (RoomManagementDetail reserve: data_table)
+                DBConnector.getDBConnector().updateReservationById(reserve.getId());
+
             GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementMain.fxml"));
             gridPane.getChildren().setAll(pane);
 
@@ -272,12 +279,11 @@ public class PageRoomManagementDetailController {
             Optional<ButtonType> action = alert.showAndWait();
 
             if (action.get() == ButtonType.OK){
-//                System.out.println("edit");
                 int s = DBConnector.getDBConnector().getIDroomByNameRoom(label_nameroom.getText());
                 int t = DBConnector.getDBConnector().getIDTyperoomFromNameTypeRoom(cb_type.getValue());
-//            System.out.println(cb_type.getValue());
-//            System.out.println(t);
+
                 DBConnector.getDBConnector().updateRoom(s,textF_name.getText(),spinner_floor.getValue(),t);
+
                 GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementMain.fxml"));
                 gridPane.getChildren().setAll(pane);
 
@@ -293,7 +299,8 @@ public class PageRoomManagementDetailController {
 
     @FXML
     void BtnLeftArrow(ActionEvent event) throws IOException {
-        GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementMain.fxml"));
+        URL url = new File("src/main/resources/fxml/Feature1Page1.fxml").toURL();
+        GridPane pane = FXMLLoader.load(url);
         gridPane.getChildren().setAll(pane);
     }
 

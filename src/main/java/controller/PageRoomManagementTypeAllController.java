@@ -17,7 +17,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class PageRoomManagementTypeAllController {
@@ -138,7 +140,8 @@ public class PageRoomManagementTypeAllController {
     //ไปหน้าค้นหาจากเมนู
     @FXML
     void handleFeature1Btn(ActionEvent event) throws IOException {
-        GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/Feature1Page1.fxml"));
+        URL url = new File("src/main/resources/fxml/Feature1Page1.fxml").toURL();
+        GridPane pane = FXMLLoader.load(url);
         gridPane.getChildren().setAll(pane);
     }
 

@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.beans.value.ChangeListener;
 import model.Room;
 import model.DBConnector;
 import model.TypeRoom;
@@ -26,7 +25,9 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -347,7 +348,8 @@ public class Feature1Page1Controller {
 
     @FXML
     void handleFeature1Btn(ActionEvent event) throws IOException {
-        GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/Feature1Page1.fxml"));
+        URL url = new File("src/main/resources/fxml/Feature1Page1.fxml").toURL();
+        GridPane pane = FXMLLoader.load(url);
         gridPane.getChildren().setAll(pane);
     }
 

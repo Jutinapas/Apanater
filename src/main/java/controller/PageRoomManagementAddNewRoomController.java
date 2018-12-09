@@ -8,7 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -128,7 +130,8 @@ public class PageRoomManagementAddNewRoomController {
     //ไปหน้าค้นหาจากเมนู
     @FXML
     void handleFeature1Btn(ActionEvent event) throws IOException {
-        GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/Feature1Page1.fxml"));
+        URL url = new File("src/main/resources/fxml/Feature1Page1.fxml").toURL();
+        GridPane pane = FXMLLoader.load(url);
         gridPane.getChildren().setAll(pane);
     }
 

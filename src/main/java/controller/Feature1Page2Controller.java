@@ -17,7 +17,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class Feature1Page2Controller {
 
@@ -171,13 +173,15 @@ public class Feature1Page2Controller {
 
     @FXML
     void backBtnHandle(ActionEvent event) throws IOException {
-        GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/Feature1Page1.fxml"));
+        URL url = new File("src/main/resources/fxml/Feature1Page1.fxml").toURL();
+        GridPane pane = FXMLLoader.load(url);
         gridPane.getChildren().setAll(pane);
     }
 
     @FXML
     void handleFeature1Btn(ActionEvent event) throws IOException {
-        GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/Feature1Page1.fxml"));
+        URL url = new File("src/main/resources/fxml/Feature1Page1.fxml").toURL();
+        GridPane pane = FXMLLoader.load(url);
         gridPane.getChildren().setAll(pane);
     }
 

@@ -13,12 +13,14 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class RoomManagementDetail {
+    int id;
     String date_star, date_end,type,user,phone;
     Button cancel;
     String fxml;
     Reservation reservation;
 
-    public RoomManagementDetail(String date_star, String date_end, String type, String user, String phone, Button cancel, String fxml,Reservation reservation) {
+    public RoomManagementDetail(int id, String date_star, String date_end, String type, String user, String phone, Button cancel, String fxml,Reservation reservation) {
+        this.id = id;
         this.date_star = date_star;
         this.date_end = date_end;
         this.type = type;
@@ -32,14 +34,12 @@ public class RoomManagementDetail {
 
        cancel.setOnAction(e -> {
            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-           alert.setTitle("คอนเฟิร์ม การยกเบิกการจอง");
-           alert.setHeaderText("คอนเฟิร์ม การยกเลิก");
-           alert.setContentText("คุณแน่ใจที่จะยกเลิกการจองของ ผู้พัก: "+getUser()+" ?");
+           alert.setContentText("คุณต้องการยกเลิกการของของ " + user + " ใช่หรือไม่ ?");
            Optional<ButtonType> action = alert.showAndWait();
 
            if (action.get() == ButtonType.OK){
 
-               DBConnector.getDBConnector().deleteReservationById(this.reservation.getId_reservation());
+               DBConnector.getDBConnector().updateReservationById(this.reservation.getId_reservation());
 
                Button b = (Button) e.getSource();
 
@@ -60,6 +60,10 @@ public class RoomManagementDetail {
 
 
         });
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getDate_star() {

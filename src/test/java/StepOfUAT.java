@@ -171,7 +171,7 @@ public class StepOfUAT {
     @When("^กดลบการจองจากห้อง (.*)")
     public void when_delete_reserve(String name) {
         reserve_size_11 = ins.selectReservationWithRoom(ins.getIDroomByNameRoom(name)).size();
-        ins.deleteReservationById(ins.getRecentReservation());
+        ins.updateReservationById(ins.getRecentReservation());
     }
     @Then("^การจองถูกลบ และจำนวนการจองของห้อง (.*) ลดลง")
     public void then_delete_reserve(String room) {
