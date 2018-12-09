@@ -4,16 +4,18 @@ import controller.DebtReminderController;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.Optional;
 
 public class DebtReminder {
-    private String dueDate, roomName, customerName, phoneNumber, roomType, debt;
+    private String dueDate, roomName, customerName, phoneNumber, roomType, debt, status;
     private int id;
-    private Button status;
+    private Button button;
+    private ImageView view;
 
-    public DebtReminder(int id, String dueDate, String roomName, String customerName, String phoneNumber, String roomType, String debt, Button status) {
+    public DebtReminder(int id, String dueDate, String roomName, String customerName, String phoneNumber, String roomType, String debt, String status,Button button, ImageView view) {
         this.id = id;
         this.dueDate = dueDate;
         this.roomName = roomName;
@@ -22,41 +24,35 @@ public class DebtReminder {
         this.roomType = roomType;
         this.debt = debt;
         this.status = status;
+        this.button = button;
+        this.view = view;
 
-        status.setOnAction(event -> {
+        button.setOnAction(event -> {
 
-            String[] s = (this.status.toString().split(" "));
-            if (s[1].equals("มียอดค้างชำระ'")){
+            if (status.equals("active")){
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("ยืนยันการชำระเงิน");
                 alert.setHeaderText("ลูกค้าท่านนี้ได้ชำระเงินค่าหอพักแล้วใช่หรือไม่");
                 alert.setContentText("ชื่อห้อง : "+this.roomName+ "\nชื่อลูกค้า : "+this.customerName
                         + "\nเบอร์โทร : "+this.phoneNumber
-                        + "\nประเภทห้อง : "+this.roomType + "\nจำนวนเงิน : " + this.debt +" บาท"
+                        + "\nประเภท : "+this.roomType + "\nจำนวนเงิน : " + this.debt +" บาท"
                         + "\nวันที่ครบกำหนดชำระ : "+ this.dueDate);
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
 
                     //update status ใน Table Debt
-                    SqlConnection.getSqlConnection().updateStatusInDebt(this.id);
+                    DBConnector.getDBConnector().updateStatusInDebt(this.id);
 
-                    status.setText(" ชำระเงินแล้ว");
-                    status.setGraphic(new ImageView("/images/yes.png"));
+                    this.button = new Button(" ชำระเงินแล้ว", view);
                     DebtReminderController.noData.remove(this);
                     DebtReminderController.yesData.add(this);
 
                 } else {
                     // ... user chose CANCEL or closed the dialog}
                 }
-            }else{
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("ยืนยันการชำระเงิน");
-                alert.setHeaderText("ลูกค้าท่านนีได้ชำระค่าเช่างวดนี้แล้ว");
-                alert.setContentText("จำนวนเงิน : "+ this.debt +" บาท");
-
-                alert.showAndWait();
             }
+
         });
     }
 
@@ -116,12 +112,16 @@ public class DebtReminder {
         this.debt = debt;
     }
 
-    public Button getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Button status) {
-        this.status = status;
+    public Button getButton() {
+        return button;
+    }
+
+    public void setButton(Button button) {
+        this.button = button;
     }
 
 }

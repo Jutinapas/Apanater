@@ -4,21 +4,17 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 
-//hi
-public class SqlConnection {
+public class DBConnector {
 
-    private static SqlConnection sqlConnection =null;
+    private static DBConnector DBConnector = null;
 
+    private DBConnector(){};
 
-
-    private SqlConnection(){};
-
-    public static SqlConnection getSqlConnection() {
-        if (sqlConnection ==null){
-            sqlConnection = new SqlConnection();
+    public static DBConnector getDBConnector() {
+        if (DBConnector ==null){
+            DBConnector = new DBConnector();
         }
-
-        return sqlConnection;
+        return DBConnector;
     }
 
     private static Connection connect() {
@@ -998,7 +994,7 @@ public class SqlConnection {
             if (c != null) {
                 String query = "Update Debt Set status = ? Where id_debt = ?";
                 PreparedStatement ps = c.prepareStatement(query);
-                ps.setString(1, "active");
+                ps.setString(1, "unactive");
                 ps.setInt(2,idDebt);
                 ps.executeUpdate();
                 ps.close();
@@ -1023,7 +1019,7 @@ public class SqlConnection {
                     p.setString(1, id_reserve + "");
                     p.setString(2, date_pay_debt);
                     p.setDouble(3, debt_balance);
-                    p.setString(4,"unactive");
+                    p.setString(4,"active");
                     p.executeUpdate();
                 }
                 c.close();

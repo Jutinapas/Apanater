@@ -16,6 +16,7 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -71,12 +72,6 @@ public class DebtReminderController{
     @FXML
     private Button clearButton;
 
-    @FXML
-    Image imageOk = new Image(getClass().getResourceAsStream("../images/yes.png"));
-
-    @FXML
-    Image imageNo = new Image(getClass().getResourceAsStream("../images/no.png"));
-
     public static ObservableList<DebtReminder> noData = FXCollections.observableArrayList();
     public static ObservableList<DebtReminder> yesData = FXCollections.observableArrayList();
     int amountMonth;
@@ -103,88 +98,54 @@ public class DebtReminderController{
         phoneNumberCol.setCellValueFactory(new PropertyValueFactory<DebtReminder, String>("phoneNumber"));
         roomTypeCol.setCellValueFactory(new PropertyValueFactory<DebtReminder, String>("roomType"));
         debtCol.setCellValueFactory(new PropertyValueFactory<DebtReminder, String>("debt"));
-        buttonCol.setCellValueFactory(new PropertyValueFactory<DebtReminder, Button>("status"));
+        buttonCol.setCellValueFactory(new PropertyValueFactory<DebtReminder, Button>("button"));
 
     }
 
-    private void loadData() throws IOException {
+    private void loadData() {
         ObservableList<DebtReminder> data_table = FXCollections.observableArrayList();
 
-        ArrayList<Debt> debt = SqlConnection.getSqlConnection().selectAllFromDebt();
+        ArrayList<Debt> debts = DBConnector.getDBConnector().selectAllFromDebt();
 
-        for(int i=0 ; i< debt.size() ; i++){
+        for (Debt debt : debts){
 
-            int idReserve = debt.get(i).getId_reserve();
-            Reservation reservations = SqlConnection.getSqlConnection().getReservationByID(idReserve);
+            int idReserve = debt.getId_reserve();
+            Reservation reservations = DBConnector.getDBConnector().getReservationByID(idReserve);
 
             int idRoom = reservations.getId_room();
-            Room rooms = SqlConnection.getSqlConnection().getRoomByID(idRoom);
+            Room rooms = DBConnector.getDBConnector().getRoomByID(idRoom);
 
             int idTypeRoom = rooms.getId_type_room();
-            TypeRoom typeRoom = SqlConnection.getSqlConnection().getTypeRoomByID(idTypeRoom);
+            TypeRoom typeRoom = DBConnector.getDBConnector().getTypeRoomByID(idTypeRoom);
 
-            //เช็ควันเดือนปี ณ ปัจจุบัน
-            LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String formatDateTime = now.format(formatter);
-            String[] dateMonthYearCurrent = formatDateTime.split("/");
-            String dateCurrent = dateMonthYearCurrent[0];
-            String monthCurrent = dateMonthYearCurrent[1];
-            String yearCurrent = dateMonthYearCurrent[2];
-
-            if (dateCurrent.charAt(0) == '0'){
-                dateCurrent = dateCurrent.charAt(1)+"";
-            }
-            if (monthCurrent.charAt(0) == '0'){
-                monthCurrent = monthCurrent.charAt(1)+"";
-            }
-
-            //เช็ควันเดือนปีประจำค่างวดนั้นๆ
-            String[] dateMonthYearPayDebt = debt.get(i).getDate_pay_debt().split("-");
-            String datePayDebt = dateMonthYearPayDebt[2];
-            String monthPayDebt = dateMonthYearPayDebt[1];
-            String yearPayDebt = dateMonthYearPayDebt[0];
-            if (datePayDebt.charAt(0) == '0'){
-                datePayDebt = datePayDebt.charAt(1)+"";
-            }
-            if (monthPayDebt.charAt(0) == '0'){
-                monthPayDebt = monthPayDebt.charAt(1)+"";
-            }
-
-            //กรณีปีมากกว่า
-            boolean yearMoreThan = (Integer.parseInt(yearCurrent)) > Integer.parseInt(yearPayDebt);
-
-            //กรณีปีเท่ากัน เดือนมากกว่า
-            boolean yearEqualMonthMoreThan =  ((Integer.parseInt(yearCurrent)) == Integer.parseInt(yearPayDebt))
-                    && (Integer.parseInt(monthCurrent) > (Integer.parseInt(monthPayDebt)));
-
-            //กรณีปีเท่ากัน เดือนเท่ากัน วันที่มากกว่าเหรือท่ากับ
-            boolean yearEqualMonthEqualDayMoreThanEqual = (Integer.parseInt(yearCurrent)) == Integer.parseInt(yearPayDebt) &&
-                    Integer.parseInt(monthCurrent) == Integer.parseInt(monthPayDebt)
-                    && Integer.parseInt(dateCurrent) >= Integer.parseInt(datePayDebt);
-
+            LocalDate date = LocalDate.parse(debt.getDate_pay_debt());
+            LocalDate now = LocalDate.now();
             //เช็คจาก3กรณีอันใดอันหนึ่งเป็นจริง ข้อมูลนั้นจะได้ add เข้า tableview
-            if (yearMoreThan || yearEqualMonthMoreThan || yearEqualMonthEqualDayMoreThanEqual){
-                if (debt.get(i).getStatus().equals("active")) {
-                    //จะเป็นปุ่มชำระแล้ว(สีเขยีว) ถ้า status เป็น active
-                    data_table.add(new DebtReminder(debt.get(i).getId_debt(),debt.get(i).getDate_pay_debt(), rooms.getRoom_name(), reservations.getName_guest(), reservations.getPhone_number()
-                            , typeRoom.getTypeRoom(), debt.get(i).getDebt_balance() + "", new Button(" ชำระเงินแล้ว", new ImageView(imageOk))));
+            if (date.isEqual(now) || date.isBefore(now)){
+                ImageView view = new ImageView(new Image("images/success-color.png"));
+                view.setFitWidth(25);
+                view.setFitHeight(25);
+                if (debt.getStatus().equals("unactive")) {
+                    Button button = new Button(" ชำระเงินแล้ว");
+                    button.setGraphic(view);
+                    data_table.add(new DebtReminder(debt.getId_debt(), debt.getDate_pay_debt(), rooms.getRoom_name(), reservations.getName_guest(), reservations.getPhone_number()
+                            , reservations.getType_reserve(), debt.getDebt_balance() + "", debt.getStatus(), button, view));
 
-                }else{
-                    //จะเป็นปุ่มมียอดค้างชำระ(สีแดง) ถ้า status เป็น unactive
-                    data_table.add(new DebtReminder(debt.get(i).getId_debt(),debt.get(i).getDate_pay_debt(), rooms.getRoom_name(), reservations.getName_guest(), reservations.getPhone_number()
-                            , typeRoom.getTypeRoom(), debt.get(i).getDebt_balance() + "", new Button(" มียอดค้างชำระ", new ImageView(imageNo))));
+                }else if (debt.getStatus().equals("active")){
+                    Button button = new Button("ชำระเงิน");
+                    data_table.add(new DebtReminder(debt.getId_debt(),debt.getDate_pay_debt(), rooms.getRoom_name(), reservations.getName_guest(), reservations.getPhone_number()
+                            , typeRoom.getTypeRoom(), debt.getDebt_balance() + "", debt.getStatus(), button, view));
                 }
             }
         }
 
         //ไว้แยกข้อมูลที่ชำระแล้วกับยังไม่ได้ชำระ
         for (int i = 0; i < data_table.size() ; i++) {
-            String[] s = (data_table.get(i).getStatus().toString().split(" "));
-            if (s[1].equals("มียอดค้างชำระ'")){
+            String s = data_table.get(i).getStatus();
+            if (s.equals("active")){
                 noData.add(data_table.get(i));
 
-            }else{
+            }else if (s.equals("unactive")){
                 yesData.add(data_table.get(i));
             }
         }
@@ -256,7 +217,7 @@ public class DebtReminderController{
     @FXML
     void check(ActionEvent event) {
         if (checkBox.isSelected()== true){
-            debtCol.setText("จำนวนเงินที่ชำระแล้ว");
+            debtCol.setText("จำนวนเงิน");
             filterField.setText("");
             tableDebtReminder.setItems(yesData);
             filter();
