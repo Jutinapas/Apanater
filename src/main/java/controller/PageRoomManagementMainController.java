@@ -3,7 +3,7 @@ package controller;
 
 import model.Room;
 import model.RoomManagement;
-import model.SqlConnection;
+import model.DBConnector;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -116,9 +116,9 @@ public class PageRoomManagementMainController {
     private void loadData() throws IOException {
         ObservableList<RoomManagement> data_table = FXCollections.observableArrayList();
         String fxml = "/fxml/PageRoomManagementDetail.fxml" ;
-        ArrayList<Room> rooms = SqlConnection.getSqlConnection().selectAllRoom();
+        ArrayList<Room> rooms = DBConnector.getDBConnector().selectAllRoom();
         for(int i=0 ; i<rooms.size() ; i++){
-            data_table.add(new RoomManagement(rooms.get(i).getRoom_name(), SqlConnection.getSqlConnection().getStringTypeRoomFromIDRoom(rooms.get(i).getId_type_room())+"",rooms.get(i).getFloor()+"",new Button("รายละเอียด"),fxml,rooms.get(i)));
+            data_table.add(new RoomManagement(rooms.get(i).getRoom_name(), DBConnector.getDBConnector().getStringTypeRoomFromIDRoom(rooms.get(i).getId_type_room())+"",rooms.get(i).getFloor()+"",new Button("รายละเอียด"),fxml,rooms.get(i)));
 
         }
 

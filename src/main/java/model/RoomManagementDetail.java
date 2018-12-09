@@ -1,7 +1,6 @@
 package model;
 
 
-import controller.PageRoomManagementDetailController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -40,7 +39,7 @@ public class RoomManagementDetail {
 
            if (action.get() == ButtonType.OK){
 
-               SqlConnection.getSqlConnection().deleteReservationById(this.reservation.getId_reservation());
+               DBConnector.getDBConnector().deleteReservationById(this.reservation.getId_reservation());
 
                Button b = (Button) e.getSource();
 

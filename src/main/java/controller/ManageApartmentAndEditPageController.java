@@ -1,7 +1,7 @@
 package controller;
 
 import model.ManageDatePay;
-import model.SqlConnection;
+import model.DBConnector;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -56,8 +56,8 @@ public class ManageApartmentAndEditPageController {
         cancel_button.setVisible(false);
         list_day.setVisible(false);
         name_apartment_edit.setVisible(false);
-        name_apartment.setText(SqlConnection.getSqlConnection().selectNameOfApartment());
-        date_pay_money.setText(SqlConnection.getSqlConnection().selectDatePayMoney());
+        name_apartment.setText(DBConnector.getDBConnector().selectNameOfApartment());
+        date_pay_money.setText(DBConnector.getDBConnector().selectDatePayMoney());
 
 
     }
@@ -105,11 +105,11 @@ public class ManageApartmentAndEditPageController {
         edit_data.setVisible(false);
         list_day.setVisible(true);
         name_apartment_edit.setVisible(true);
-        name_apartment_edit.setText(SqlConnection.getSqlConnection().selectNameOfApartment());
+        name_apartment_edit.setText(DBConnector.getDBConnector().selectNameOfApartment());
         name_apartment_edit.setEditable(true);
 
         ManageDatePay m =new ManageDatePay();
-        SpinnerValueFactory<Integer> dateValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,m.getDays(),Integer.parseInt(SqlConnection.getSqlConnection().selectDatePayMoney()));
+        SpinnerValueFactory<Integer> dateValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,m.getDays(),Integer.parseInt(DBConnector.getDBConnector().selectDatePayMoney()));
         list_day.setValueFactory(dateValueFactory);
 
     }
@@ -129,7 +129,7 @@ public class ManageApartmentAndEditPageController {
 
             //update data to database
 
-            SqlConnection.getSqlConnection().updateApartmentNameAndDatePayMoney(name_apartment_edit_textfield,date_we_choose_to_edit);
+            DBConnector.getDBConnector().updateApartmentNameAndDatePayMoney(name_apartment_edit_textfield,date_we_choose_to_edit);
             initialize();
         }
 

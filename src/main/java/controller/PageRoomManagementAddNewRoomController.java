@@ -1,5 +1,5 @@
 package controller;
-import model.SqlConnection;
+import model.DBConnector;
 import model.TypeRoom;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -70,7 +70,7 @@ public class PageRoomManagementAddNewRoomController {
 
     @FXML
     void setComboBox(){
-        typeRooms = SqlConnection.getSqlConnection().selectAllTypeRoom();
+        typeRooms = DBConnector.getDBConnector().selectAllTypeRoom();
         ArrayList<String> lst = new ArrayList<>();
         for(TypeRoom i:typeRooms){
             lst.add(i.getTypeRoom());
@@ -104,7 +104,7 @@ public class PageRoomManagementAddNewRoomController {
                         t = i.getIdTypeRoom();
                     }
                 }
-                SqlConnection.getSqlConnection().insertRoom(tf.getText(),t,spinner.getValue());
+                DBConnector.getDBConnector().insertRoom(tf.getText(),t,spinner.getValue());
                 GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementMain.fxml"));
                 gridPane.getChildren().setAll(pane);
             }

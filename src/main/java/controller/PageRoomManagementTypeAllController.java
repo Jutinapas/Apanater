@@ -1,7 +1,7 @@
 package controller;
 
 import model.RoomManagementType;
-import model.SqlConnection;
+import model.DBConnector;
 import model.TypeRoom;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -108,7 +108,7 @@ public class PageRoomManagementTypeAllController {
     private void loadData(){
         ObservableList<RoomManagementType> data_table = FXCollections.observableArrayList();
         String fxml = "/fxml/PageRoomManagementInfoTypeRoom.fxml" ;
-        ArrayList<TypeRoom> typeRooms = SqlConnection.getSqlConnection().selectAllTypeRoom();
+        ArrayList<TypeRoom> typeRooms = DBConnector.getDBConnector().selectAllTypeRoom();
         for(int i=0 ; i<typeRooms.size() ; i++){
             data_table.add(new RoomManagementType(typeRooms.get(i).getTypeRoom(),typeRooms.get(i).getRentPerDay()+"",typeRooms.get(i).getRentPerMonth()+"",new Button("รายละเอียด"),fxml,typeRooms.get(i)));
         }

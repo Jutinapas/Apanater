@@ -16,7 +16,6 @@ import javafx.scene.layout.GridPane;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Random;
 
 public class PageRoomManagementDetailController {
     @FXML
@@ -122,7 +121,7 @@ public class PageRoomManagementDetailController {
         cb_type.setVisible(false);
         spinner_floor.setVisible(false);
 
-        ArrayList<TypeRoom> typeRooms = SqlConnection.getSqlConnection().selectAllTypeRoom();
+        ArrayList<TypeRoom> typeRooms = DBConnector.getDBConnector().selectAllTypeRoom();
         ArrayList<String> lst = new ArrayList<>();
         for(TypeRoom t:typeRooms){
             lst.add(t.getTypeRoom());
@@ -216,9 +215,9 @@ public class PageRoomManagementDetailController {
 
     private void loadData() throws IOException {
         ObservableList<RoomManagementDetail> data_table = FXCollections.observableArrayList();
-        int id = SqlConnection.getSqlConnection().getIDroomByNameRoom(label_nameroom.getText());
+        int id = DBConnector.getDBConnector().getIDroomByNameRoom(label_nameroom.getText());
         ArrayList<Reservation> reservations = new ArrayList<>();
-        reservations = SqlConnection.getSqlConnection().selectReservationWithRoom(id);
+        reservations = DBConnector.getDBConnector().selectReservationWithRoom(id);
         String fxml = "/fxml/PageRoomManagementMain.fxml" ;
         for(int i=0 ; i<reservations.size() ; i++){
             data_table.add(new RoomManagementDetail(reservations.get(i).getDate_check_in()+"",reservations.get(i).getDate_check_out()+"",reservations.get(i).getType_reserve(),reservations.get(i).getName_guest()+"",reservations.get(i).getPhone_number()+"",new Button("ยกเลิกการจอง"),fxml,reservations.get(i)));
@@ -237,8 +236,8 @@ public class PageRoomManagementDetailController {
 
         if (action.get() == ButtonType.OK){
 //            System.out.println("delete");
-            int s = SqlConnection.getSqlConnection().getIDroomByNameRoom(label_nameroom.getText());
-            SqlConnection.getSqlConnection().deleteRoom(s);
+            int s = DBConnector.getDBConnector().getIDroomByNameRoom(label_nameroom.getText());
+            DBConnector.getDBConnector().deleteRoom(s);
             GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementMain.fxml"));
             gridPane.getChildren().setAll(pane);
 
@@ -278,11 +277,11 @@ public class PageRoomManagementDetailController {
 
             if (action.get() == ButtonType.OK){
 //                System.out.println("edit");
-                int s = SqlConnection.getSqlConnection().getIDroomByNameRoom(label_nameroom.getText());
-                int t = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(cb_type.getValue());
+                int s = DBConnector.getDBConnector().getIDroomByNameRoom(label_nameroom.getText());
+                int t = DBConnector.getDBConnector().getIDTyperoomFromNameTypeRoom(cb_type.getValue());
 //            System.out.println(cb_type.getValue());
 //            System.out.println(t);
-                SqlConnection.getSqlConnection().updateRoom(s,textF_name.getText(),spinner_floor.getValue(),t);
+                DBConnector.getDBConnector().updateRoom(s,textF_name.getText(),spinner_floor.getValue(),t);
                 GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementMain.fxml"));
                 gridPane.getChildren().setAll(pane);
 

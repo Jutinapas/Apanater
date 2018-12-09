@@ -1,7 +1,7 @@
 package controller;
 
 
-import model.SqlConnection;
+import model.DBConnector;
 import model.TypeRoom;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -115,7 +115,7 @@ public class PageRoomManagementEditTypeRoomController {
             Optional<ButtonType> action = alert.showAndWait();
 
             if (action.get() == ButtonType.OK){
-                SqlConnection.getSqlConnection().updateTypeRoom(tr.getIdTypeRoom(),tf.getText(),spinnerMonth.getValue(),spinnerDay.getValue());
+                DBConnector.getDBConnector().updateTypeRoom(tr.getIdTypeRoom(),tf.getText(),spinnerMonth.getValue(),spinnerDay.getValue());
                 GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/PageRoomManagementTypeAll.fxml"));
                 gridPane.getChildren().setAll(pane);
                 clear();

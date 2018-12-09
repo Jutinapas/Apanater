@@ -3,10 +3,8 @@ package model;
 import java.util.Calendar;
 
 public class ManageDatePay {
+
     private int days;
-
-
-
 
     public ManageDatePay(){
         Calendar calendar = Calendar.getInstance();
@@ -14,9 +12,8 @@ public class ManageDatePay {
         days = calendar.getActualMaximum(Calendar.DATE);
     }
 
-
-
     public int getDays() {
         return days;
     }
+
 }
