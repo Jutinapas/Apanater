@@ -1,0 +1,144 @@
+.pane {
+    -fx-background-color: #dfd8d1;
+}
+
+/* Label */
+.label {
+    -fx-font-family: 'supermarket';
+}
+.name-label {
+   -fx-font-size: 24px;
+}
+.info-label .text {
+    -fx-font-size: 72px;
+    -fx-fill: #485b7a;
+}
+.info-small-label .text {
+    -fx-font-size: 48;
+    -fx-fill: #485b7a;
+}
+.title-label {
+    -fx-font-size: 56px;
+}
+.back-label {
+    -fx-font-size: 40px;
+}
+
+/* TextField */
+.text-field {
+    -fx-text-inner-color: #485b7a;
+    -fx-font-family: 'supermarket';
+    -fx-font-size: 24px;
+}
+
+.text-field:focused {
+    -fx-text-inner-color: #485b7a;
+    -fx-font-family: 'supermarket';
+    -fx-font-size: 24px;
+}
+
+/* Button */
+.button {
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgb(0, 0, 0, 0.4), 5, 0.0, 0, 1);
+}
+
+.button-common {
+    -fx-background-color: #b86565;
+    -fx-font-family: 'supermarket';
+    -fx-font-size: 28px;
+}
+
+.button-common:hover {
+    -fx-background-color: #a79a8f;
+    -fx-font-size: 28px;
+}
+.button-common-clicked {
+    -fx-background-color: #a79a8f;
+    -fx-font-family: 'supermarket';
+    -fx-font-size: 28px;
+}
+
+.button-accept {
+    -fx-background-color: #485b7a;
+    -fx-font-family: 'supermarket';
+    -fx-fill: white;
+    -fx-font-size: 28px;
+}
+.button-decline {
+    -fx-background-color: #b86565;
+    -fx-font-family: 'supermarket';
+    -fx-fill: white;
+    -fx-font-size: 28px;
+}
+.button-accept:hover {
+    -fx-background-color: #a79a8f;
+    -fx-font-size: 28px;
+}
+.button-decline:hover {
+    -fx-background-color: #a79a8f;
+    -fx-font-size: 28px;
+}
+
+.button-back {
+   -fx-background-color: transparent;
+}
+
+.button-back:hover {
+   -fx-background-color:  #e6e6e6;
+}
+
+
+.menu-bar {
+    /* 1 pixel border around the top and right of the grid: */
+    -fx-background-color: #3d3a4b;
+    -fx-padding: 3 ;
+}
+.button-bar {
+    /* 1 pixel border around the left and bottom of each cell: */
+    -fx-background-color: #485b7a;
+    -fx-font-size: 22px;
+    -fx-font-family: 'supermarket';
+    -fx-fill: white;
+}
+.button-bar:hover {
+    -fx-background-color: #a79a8f;
+    -fx-font-size: 22px;
+}
+.button-bar-clicked {
+    -fx-background-color: #a79a8f;
+    -fx-font-size: 22px;
+    -fx-font-family: 'supermarket';
+    -fx-fill: white;
+}
+
+/* TableView */
+.table-view .table-cell .text{
+    -fx-table-cell-border-color: #C3D3D9;
+    -fx-font-size: 22px;
+    -fx-font-family: 'supermarket';
+}
+
+.column-header {
+    -fx-font-size: 22px;
+}
+
+.table-row-cell {
+    -fx-cell-size: 85px;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #fff2e6;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #fff2e6;
+}
+.table-row-cell:selected .text {
+    -fx-fill: black;
+}
+
+.table-cell {
+    -fx-alignment: CENTER;
+}
+
