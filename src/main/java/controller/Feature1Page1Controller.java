@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.beans.value.ChangeListener;
 import model.Room;
 import model.DBConnector;
 import model.TypeRoom;
@@ -155,6 +156,28 @@ public class Feature1Page1Controller {
 
         // Setup
         reserveType = MONTHLY;
+        fromDatePicker.setOnAction(e -> {
+            rooms.clear();
+            update();
+        });
+        toDatePicker.setOnAction(e -> {
+            rooms.clear();
+            update();
+        });
+        numMonthField.focusedProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue) {
+                rooms.clear();
+                update();
+            }
+        });
+        roomTypeBox.setOnAction(e -> {
+            rooms.clear();
+            update();
+        });
+        floorBox.setOnAction(e -> {
+            rooms.clear();
+            update();
+        });
 
         // Spinner
         SpinnerValueFactory factory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE);

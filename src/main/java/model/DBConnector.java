@@ -84,7 +84,7 @@ public class DBConnector {
                  //   System.out.println("create Apartment table");
                     String query2 = "Insert into Apartment(name_apartment,date_pay_money,status) values(?,?,?) ";
                     PreparedStatement test = c.prepareStatement(query2);
-                    test.setString(1,"default_name");
+                    test.setString(1,"หอพักสุขใจ");
                     test.setString(2,"1");
                     test.setString(3,"active");
                     test.executeUpdate();
