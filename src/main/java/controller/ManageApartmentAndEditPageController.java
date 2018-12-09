@@ -117,22 +117,23 @@ public class ManageApartmentAndEditPageController {
     //ตกลงการจัดการหอพัก
     @FXML
     void acceptEdit(ActionEvent event){
-        String date_we_choose_to_edit = list_day.getValue().toString();
-        String name_apartment_edit_textfield = name_apartment_edit.getText();
+        if (list_day.getValue() != null && !name_apartment_edit.getText().isEmpty()) {
+            String date_we_choose_to_edit = list_day.getValue().toString();
+            String name_apartment_edit_textfield = name_apartment_edit.getText();
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Edit Apartment details");
-        alert.setContentText("Are you sure to Edit This Name of Apartment and Date for pay money ?");
-        Optional<ButtonType> action = alert.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("คุณต้องการจะแก้ไขข้อมูลหอพักใช่หรือไม่ ?");
+            Optional<ButtonType> action = alert.showAndWait();
 
-        if (action.get() == ButtonType.OK){
-
-            //update data to database
-
-            DBConnector.getDBConnector().updateApartmentNameAndDatePayMoney(name_apartment_edit_textfield,date_we_choose_to_edit);
-            initialize();
+            if (action.get() == ButtonType.OK) {
+                DBConnector.getDBConnector().updateApartmentNameAndDatePayMoney(name_apartment_edit_textfield, date_we_choose_to_edit);
+                initialize();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ไม่สามารถแก้ไขได้");
+            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบ");
         }
-
     }
 
     //ยกเลิกการจัดการหอพัก
@@ -140,6 +141,5 @@ public class ManageApartmentAndEditPageController {
     void cancelEdit(ActionEvent event){
         initialize();
     }
-
 
 }

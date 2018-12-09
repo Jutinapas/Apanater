@@ -229,9 +229,7 @@ public class PageRoomManagementDetailController {
     @FXML
     void BtnDelete(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("คอนเฟิร์ม การลบห้อง");
-        alert.setHeaderText("คอนเฟิร์ม การลบ");
-        alert.setContentText("คุณแน่ใจที่จะลบ ห้อง: "+label_nameroom.getText()+" ?");
+        alert.setContentText("คุณต้องการจะลบห้องนี้ใช่หรือไม่ ?");
         Optional<ButtonType> action = alert.showAndWait();
 
         if (action.get() == ButtonType.OK){
@@ -270,9 +268,7 @@ public class PageRoomManagementDetailController {
     void BtnY(ActionEvent event) throws IOException {
         if(textF_name.getText().length() > 0){
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("คอนเฟิร์ม การแก้ไขห้อง");
-            alert.setHeaderText("คอนเฟิร์ม การแก้ไข");
-            alert.setContentText("คุณแน่ใจที่จะแก้ไข ห้อง: "+label_nameroom.getText()+" ?");
+            alert.setContentText("คุณต้องการจะเแก้ไขข้อมูลห้องพักใช่หรือไม่ ?");
             Optional<ButtonType> action = alert.showAndWait();
 
             if (action.get() == ButtonType.OK){
@@ -289,8 +285,8 @@ public class PageRoomManagementDetailController {
         }
         else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ไม่สามารถแก้ไขห้องได้");
-            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบก่อน");
+            alert.setTitle("ไม่สามารถแก้ไขข้อมูลห้องพักได้");
+            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบ");
             alert.showAndWait();
         }
     }

@@ -91,9 +91,7 @@ public class PageRoomManagementAddNewRoomController {
 
         if(tf.getText().length() > 0 && cb.getValue() != null){
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("คอนเฟิร์ม การเพิ่มห้องใหม่");
-            alert.setHeaderText("คอนเฟิร์ม การเพิ่มห้อง");
-            alert.setContentText("คุณแน่ใจที่จะเพิ่ม ห้อง: "+tf.getText()+" ประเถทห้อง: "+cb.getValue()+" ชั้น: "+spinner.getValue()+" ?");
+            alert.setContentText("คุณต้องการจะเพิ่มห้องพักใหม่ใช่หรือไม่ ?");
             Optional<ButtonType> action = alert.showAndWait();
 
             if (action.get() == ButtonType.OK){
@@ -112,10 +110,9 @@ public class PageRoomManagementAddNewRoomController {
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ไม่สามารถเพิ่มห้องได้");
-            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบก่อน");
+            alert.setTitle("ไม่สามารถเพิ่มห้องพักได้");
+            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบ");
             alert.showAndWait();
-
         }
 
 

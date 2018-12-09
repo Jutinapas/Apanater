@@ -75,9 +75,7 @@ public class PageRoomManagementTypeAddNewTypeController {
     void BtnCorrect(ActionEvent event) throws IOException {
         if(tf.getText().length() > 0){
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("คอนเฟิร์ม การเพิ่มประเภทห้อง");
-            alert.setHeaderText("คอนเฟิร์ม การเพิ่ม");
-            alert.setContentText("คุณแน่ใจที่จะเพิ่ม ประเภทห้อง: "+tf.getText()+" รายวัน: "+spinnerDay.getValue()+" รายเดือน: "+spinnerMonth.getValue()+" ?");
+            alert.setContentText("คุณต้องการจะเพิ่มประเภทห้องใหม่ใช่หรือไม่ ?");
             Optional<ButtonType> action = alert.showAndWait();
 
             if (action.get() == ButtonType.OK){
@@ -90,7 +88,7 @@ public class PageRoomManagementTypeAddNewTypeController {
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ไม่สามารถเพิ่มประเภทห้องได้");
-            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบก่อน");
+            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบ");
             alert.showAndWait();
         }
 

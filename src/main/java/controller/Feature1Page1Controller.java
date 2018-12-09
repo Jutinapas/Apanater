@@ -435,7 +435,7 @@ public class Feature1Page1Controller {
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ไม่สามารถค้นหาได้");
-            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบก่อนกดค้นหา");
+            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบ");
             alert.showAndWait();
             return;
         }
@@ -445,7 +445,7 @@ public class Feature1Page1Controller {
             if (reserveType == DAILY && (date_out.isBefore(date_in) || date_out.isEqual(date_in))) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ไม่สามารถค้นหาได้");
-                alert.setHeaderText("โปรดกรอกข้อมูลให้ถูกต้องก่อนกดค้นหา");
+                alert.setHeaderText("โปรดกรอกข้อมูลให้ถูกต้อง");
                 alert.showAndWait();
                 return;
             }

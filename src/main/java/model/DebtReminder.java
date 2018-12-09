@@ -31,12 +31,7 @@ public class DebtReminder {
 
             if (status.equals("active")){
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("ยืนยันการชำระเงิน");
-                alert.setHeaderText("ลูกค้าท่านนี้ได้ชำระเงินค่าหอพักแล้วใช่หรือไม่");
-                alert.setContentText("ชื่อห้อง : "+this.roomName+ "\nชื่อลูกค้า : "+this.customerName
-                        + "\nเบอร์โทร : "+this.phoneNumber
-                        + "\nประเภท : "+this.roomType + "\nจำนวนเงิน : " + this.debt +" บาท"
-                        + "\nวันที่ครบกำหนดชำระ : "+ this.dueDate);
+                alert.setContentText("คุณต้องการจะชำระเงินของห้อง " + roomName + " ใช่หรือไม่ ?");
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {

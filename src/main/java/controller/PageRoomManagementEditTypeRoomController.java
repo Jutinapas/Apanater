@@ -109,9 +109,7 @@ public class PageRoomManagementEditTypeRoomController {
     void BtnCorrect(ActionEvent event) throws IOException {
         if(tf.getText().length() > 0){
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("คอนเฟิร์ม การแก้ไขประภทห้อง");
-            alert.setHeaderText("คอนเฟิร์ม การแก้ไข");
-            alert.setContentText("คุณแน่ใจที่จะแก้ไข ประเภทห้อง: "+tf.getText()+" รายวัน: "+spinnerDay.getValue()+" รายเดือน: "+spinnerMonth.getValue()+" ?");
+            alert.setContentText("คุณต้องการจะแก้ไขข้อมูลประเภทห้องใช่หรือไม่ ?");
             Optional<ButtonType> action = alert.showAndWait();
 
             if (action.get() == ButtonType.OK){
@@ -124,7 +122,7 @@ public class PageRoomManagementEditTypeRoomController {
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ไม่สามารถแก้ไขประเภทห้องได้");
-            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบก่อน");
+            alert.setHeaderText("โปรดกรอกข้อมูลให้ครบ");
             alert.showAndWait();
         }
 

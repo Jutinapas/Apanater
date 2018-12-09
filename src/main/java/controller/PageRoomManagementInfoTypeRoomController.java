@@ -67,9 +67,7 @@ public class PageRoomManagementInfoTypeRoomController {
     @FXML
     void BtnDelete(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("คอนเฟิร์ม การลบประเภทห้อง");
-        alert.setHeaderText("คอนเฟิร์ม การลบ");
-        alert.setContentText("คุณแน่ใจที่จะลบ ประเภทห้อง: "+label_type.getText()+" รายวัน: "+label_amountD.getText()+" รายเดือน: "+label_amountM.getText()+" ?");
+        alert.setContentText("คุณต้องการจะลบประเภทห้องใช่หรือไม่ ?");
         Optional<ButtonType> action = alert.showAndWait();
 
         if (action.get() == ButtonType.OK){
