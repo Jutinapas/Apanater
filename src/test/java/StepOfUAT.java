@@ -3,7 +3,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import model.Room;
-import model.SqlConnection;
+import model.DBConnector;
 import model.TypeRoom;
 
 import java.time.LocalDate;
@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class StepOfUAT {
 
-    SqlConnection ins;
+    DBConnector ins;
     @Before
     public void setup() {
-        ins = SqlConnection.getSqlConnection();
+        ins = DBConnector.getDBConnector();
     }
 
     // 1 Edit Apartment

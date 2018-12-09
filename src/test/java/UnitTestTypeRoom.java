@@ -1,4 +1,4 @@
-import model.SqlConnection;
+import model.DBConnector;
 import model.TypeRoom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,8 +13,8 @@ public class UnitTestTypeRoom {
 
     @BeforeEach
     void init(){
-        SqlConnection.getSqlConnection().createTypeRoomTable();
-        typeRoomsAllOld = SqlConnection.getSqlConnection().selectAllTypeRoom();
+        DBConnector.getDBConnector().createTypeRoomTable();
+        typeRoomsAllOld = DBConnector.getDBConnector().selectAllTypeRoom();
         name = "testUnit"+(typeRoomsAllOld.size()+1);
     }
 
@@ -22,9 +22,9 @@ public class UnitTestTypeRoom {
     //TypeRoom
     @Test
     void insertTypeRoom() {
-        SqlConnection.getSqlConnection().insertTypeRoom(name,1D,2D);
+        DBConnector.getDBConnector().insertTypeRoom(name,1D,2D);
 
-        ArrayList<TypeRoom> typeRoomsAllNew = SqlConnection.getSqlConnection().selectAllTypeRoom();
+        ArrayList<TypeRoom> typeRoomsAllNew = DBConnector.getDBConnector().selectAllTypeRoom();
 
         assertEquals(typeRoomsAllOld.size()+1,typeRoomsAllNew.size());
     }
@@ -32,36 +32,36 @@ public class UnitTestTypeRoom {
 
     @Test
     void updateTypeRoom() {
-        SqlConnection.getSqlConnection().insertTypeRoom(name,1D,2D);
-        int id  = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(name);
-        ArrayList<TypeRoom> typeRoomsAllNew = SqlConnection.getSqlConnection().selectAllTypeRoom();
+        DBConnector.getDBConnector().insertTypeRoom(name,1D,2D);
+        int id  = DBConnector.getDBConnector().getIDTyperoomFromNameTypeRoom(name);
+        ArrayList<TypeRoom> typeRoomsAllNew = DBConnector.getDBConnector().selectAllTypeRoom();
         String nameNew = "testUnit"+(typeRoomsAllNew.size()+1);
 
-        SqlConnection.getSqlConnection().updateTypeRoom(id,nameNew,3D,4D);
-        int idNew  = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(nameNew);
+        DBConnector.getDBConnector().updateTypeRoom(id,nameNew,3D,4D);
+        int idNew  = DBConnector.getDBConnector().getIDTyperoomFromNameTypeRoom(nameNew);
         assertEquals(id,idNew);
     }
 
 
     @Test
     void deleteTypeRoom() {
-        SqlConnection.getSqlConnection().insertTypeRoom(name,1D,2D);
+        DBConnector.getDBConnector().insertTypeRoom(name,1D,2D);
 
-        ArrayList<TypeRoom> typeRoomsAllOld1 = SqlConnection.getSqlConnection().selectAllTypeRoom();
-        int id  = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(name);
-        SqlConnection.getSqlConnection().deleteTypeRoom(id);
+        ArrayList<TypeRoom> typeRoomsAllOld1 = DBConnector.getDBConnector().selectAllTypeRoom();
+        int id  = DBConnector.getDBConnector().getIDTyperoomFromNameTypeRoom(name);
+        DBConnector.getDBConnector().deleteTypeRoom(id);
 
-        ArrayList<TypeRoom> typeRoomsDelete = SqlConnection.getSqlConnection().selectAllTypeRoom();
+        ArrayList<TypeRoom> typeRoomsDelete = DBConnector.getDBConnector().selectAllTypeRoom();
         assertEquals(typeRoomsAllOld1.size()-1 ,typeRoomsDelete.size());
     }
 
 
     @Test
     void getTypeRoom() {
-        SqlConnection.getSqlConnection().insertTypeRoom(name,1D,2D);
+        DBConnector.getDBConnector().insertTypeRoom(name,1D,2D);
 
-        int id  = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(name);
-        TypeRoom typeRoom = SqlConnection.getSqlConnection().getTypeRoomByID(id);
+        int id  = DBConnector.getDBConnector().getIDTyperoomFromNameTypeRoom(name);
+        TypeRoom typeRoom = DBConnector.getDBConnector().getTypeRoomByID(id);
         assertEquals(name,typeRoom.getTypeRoom());
     }
 

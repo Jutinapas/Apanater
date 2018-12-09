@@ -13,20 +13,20 @@ public class UnitTestReservationAndDebt {
 
     @BeforeEach
     void init(){
-        SqlConnection.getSqlConnection().createTypeRoomTable();
-        SqlConnection.getSqlConnection().createRoomTable();
-        SqlConnection.getSqlConnection().createReservationTable();
-        SqlConnection.getSqlConnection().createDebtTable();
+        DBConnector.getDBConnector().createTypeRoomTable();
+        DBConnector.getDBConnector().createRoomTable();
+        DBConnector.getDBConnector().createReservationTable();
+        DBConnector.getDBConnector().createDebtTable();
 
-        ArrayList<TypeRoom> typeRooms = SqlConnection.getSqlConnection().selectAllTypeRoom();
+        ArrayList<TypeRoom> typeRooms = DBConnector.getDBConnector().selectAllTypeRoom();
         String nameType = "typeRoom"+(typeRooms.size()+1);
-        SqlConnection.getSqlConnection().insertTypeRoom(nameType,1D,2D);
-        idType = SqlConnection.getSqlConnection().getIDTyperoomFromNameTypeRoom(nameType);
+        DBConnector.getDBConnector().insertTypeRoom(nameType,1D,2D);
+        idType = DBConnector.getDBConnector().getIDTyperoomFromNameTypeRoom(nameType);
 
-        ArrayList<Room> rooms = SqlConnection.getSqlConnection().selectAllRoom();
+        ArrayList<Room> rooms = DBConnector.getDBConnector().selectAllRoom();
         String nameRoom = "room"+(rooms.size()+1);
-        SqlConnection.getSqlConnection().insertRoom(nameRoom,idType,300);
-        idRoom = SqlConnection.getSqlConnection().getIDroomByNameRoom(nameRoom);
+        DBConnector.getDBConnector().insertRoom(nameRoom,idType,300);
+        idRoom = DBConnector.getDBConnector().getIDroomByNameRoom(nameRoom);
 
         dateIn= (1980+rooms.size())+"-11-01";
         dateOut = (1980+rooms.size())+"-12-01";
@@ -37,47 +37,47 @@ public class UnitTestReservationAndDebt {
     //ReservationAndDebt
     @Test
     void insertReservation() {
-        ArrayList<Reservation> reservationsOld = SqlConnection.getSqlConnection().selectAllReservation();
-        SqlConnection.getSqlConnection().insertReservation(LocalDate.parse(dateIn),LocalDate.parse(dateOut),idRoom,"MONTHLY","user","012");
-        ArrayList<Reservation> reservationsNew = SqlConnection.getSqlConnection().selectAllReservation();
+        ArrayList<Reservation> reservationsOld = DBConnector.getDBConnector().selectAllReservation();
+        DBConnector.getDBConnector().insertReservation(LocalDate.parse(dateIn),LocalDate.parse(dateOut),idRoom,"MONTHLY","user","012");
+        ArrayList<Reservation> reservationsNew = DBConnector.getDBConnector().selectAllReservation();
 
         assertEquals(reservationsOld.size()+1,reservationsNew.size());
     }
 
     @Test
     void deleteTypeRoom() {
-        SqlConnection.getSqlConnection().insertReservation(LocalDate.parse(dateIn),LocalDate.parse(dateOut),idRoom,"MONTHLY","user","012");
-        ArrayList<Reservation> reservationsOld = SqlConnection.getSqlConnection().selectAllReservation();
+        DBConnector.getDBConnector().insertReservation(LocalDate.parse(dateIn),LocalDate.parse(dateOut),idRoom,"MONTHLY","user","012");
+        ArrayList<Reservation> reservationsOld = DBConnector.getDBConnector().selectAllReservation();
 
-        int id = SqlConnection.getSqlConnection().getIdReservationByName(dateIn,dateOut,idRoom);
-        SqlConnection.getSqlConnection().deleteReservationById(id);
-        ArrayList<Reservation> reservationsNew = SqlConnection.getSqlConnection().selectAllReservation();
+        int id = DBConnector.getDBConnector().getIdReservationByName(dateIn,dateOut,idRoom);
+        DBConnector.getDBConnector().deleteReservationById(id);
+        ArrayList<Reservation> reservationsNew = DBConnector.getDBConnector().selectAllReservation();
         assertEquals(reservationsOld.size()-1,reservationsNew.size());
 
     }
 
     @Test
     void insertDebt() {
-        ArrayList<Debt> debtsOld = SqlConnection.getSqlConnection().selectAllFromDebt();
-        SqlConnection.getSqlConnection().insertReservation(LocalDate.parse(dateIn),LocalDate.parse(dateOut),idRoom,"MONTHLY","user","012");
-        int id = SqlConnection.getSqlConnection().getIdReservationByName(dateIn,dateOut,idRoom);
-        SqlConnection.getSqlConnection().insertDebt(id,dateOut,2D);
+        ArrayList<Debt> debtsOld = DBConnector.getDBConnector().selectAllFromDebt();
+        DBConnector.getDBConnector().insertReservation(LocalDate.parse(dateIn),LocalDate.parse(dateOut),idRoom,"MONTHLY","user","012");
+        int id = DBConnector.getDBConnector().getIdReservationByName(dateIn,dateOut,idRoom);
+        DBConnector.getDBConnector().insertDebt(id,dateOut,2D);
 
-        ArrayList<Debt> debtsNew = SqlConnection.getSqlConnection().selectAllFromDebt();
+        ArrayList<Debt> debtsNew = DBConnector.getDBConnector().selectAllFromDebt();
         assertEquals(debtsOld.size()+1,debtsNew.size());
     }
 
 
     @Test
     void deleteDebt() {
-        SqlConnection.getSqlConnection().insertReservation(LocalDate.parse(dateIn),LocalDate.parse(dateOut),idRoom,"MONTHLY","user","012");
-        int id = SqlConnection.getSqlConnection().getIdReservationByName(dateIn,dateOut,idRoom);
-        SqlConnection.getSqlConnection().insertDebt(id,dateOut,2D);
-        ArrayList<Debt> debtsOld = SqlConnection.getSqlConnection().selectActiveDebt();
+        DBConnector.getDBConnector().insertReservation(LocalDate.parse(dateIn),LocalDate.parse(dateOut),idRoom,"MONTHLY","user","012");
+        int id = DBConnector.getDBConnector().getIdReservationByName(dateIn,dateOut,idRoom);
+        DBConnector.getDBConnector().insertDebt(id,dateOut,2D);
+        ArrayList<Debt> debtsOld = DBConnector.getDBConnector().selectActiveDebt();
 
-        int idDebt = SqlConnection.getSqlConnection().getIDDebtFromIDReserve(id);
-        SqlConnection.getSqlConnection().updateStatusInDebt(idDebt);
-        ArrayList<Debt> debtsNew = SqlConnection.getSqlConnection().selectActiveDebt();
+        int idDebt = DBConnector.getDBConnector().getIDDebtFromIDReserve(id);
+        DBConnector.getDBConnector().updateStatusInDebt(idDebt);
+        ArrayList<Debt> debtsNew = DBConnector.getDBConnector().selectActiveDebt();
         assertEquals(debtsOld.size()+1,debtsNew.size());
 
     }

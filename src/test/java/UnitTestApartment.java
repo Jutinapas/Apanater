@@ -1,11 +1,6 @@
-import model.SqlConnection;
-import model.TypeRoom;
-import org.junit.Before;
+import model.DBConnector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,15 +9,15 @@ public class UnitTestApartment {
 
     @BeforeEach
     void setup(){
-        SqlConnection.getSqlConnection().createApartmentTable();
+        DBConnector.getDBConnector().createApartmentTable();
     }
 
     //Apartment
     @Test
     void updateApartmentName() {
-        String nameOld = SqlConnection.getSqlConnection().selectNameOfApartment();
-        SqlConnection.getSqlConnection().updateApartmentNameAndDatePayMoney(nameOld + "1", "2");
-        String nameNew = SqlConnection.getSqlConnection().selectNameOfApartment();
+        String nameOld = DBConnector.getDBConnector().selectNameOfApartment();
+        DBConnector.getDBConnector().updateApartmentNameAndDatePayMoney(nameOld + "1", "2");
+        String nameNew = DBConnector.getDBConnector().selectNameOfApartment();
         assertEquals(true, !nameNew.equals(nameOld));
     }
 
