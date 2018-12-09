@@ -9,7 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -107,7 +109,8 @@ public class Feature1Page3Controller {
                         DBConnector.getDBConnector().insertDebt(id_reserve, date.toString(), balance);
                     }
                 }
-                GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/Feature1Page1.fxml"));
+                URL url = new File("src/main/resources/fxml/Feature1Page1.fxml").toURL();
+                GridPane pane = FXMLLoader.load(url);
                 gridPane.getChildren().setAll(pane);
             }
 
@@ -121,13 +124,15 @@ public class Feature1Page3Controller {
 
     @FXML
     void cancelBtnHandle(ActionEvent event) throws IOException {
-        GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/Feature1Page1.fxml"));
+        URL url = new File("src/main/resources/fxml/Feature1Page1.fxml").toURL();
+        GridPane pane = FXMLLoader.load(url);
         gridPane.getChildren().setAll(pane);
     }
 
     @FXML
     void handleFeature1Btn(ActionEvent event) throws IOException {
-        GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/Feature1Page1.fxml"));
+        URL url = new File("src/main/resources/fxml/Feature1Page1.fxml").toURL();
+        GridPane pane = FXMLLoader.load(url);
         gridPane.getChildren().setAll(pane);
     }
 

@@ -50,7 +50,7 @@ public class UnitTestReservationAndDebt {
         ArrayList<Reservation> reservationsOld = DBConnector.getDBConnector().selectAllReservation();
 
         int id = DBConnector.getDBConnector().getIdReservationByName(dateIn,dateOut,idRoom);
-        DBConnector.getDBConnector().deleteReservationById(id);
+        DBConnector.getDBConnector().updateReservationById(id);
         ArrayList<Reservation> reservationsNew = DBConnector.getDBConnector().selectAllReservation();
         assertEquals(reservationsOld.size()-1,reservationsNew.size());
 
