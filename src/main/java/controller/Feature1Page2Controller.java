@@ -2,7 +2,7 @@ package controller;
 
 import model.Reservation;
 import model.Room;
-import model.SqlConnection;
+import model.DBConnector;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -151,11 +151,10 @@ public class Feature1Page2Controller {
             @Override
             public void run() {
                 roomNameLabel.setText(room.getRoom_name());
-                roomTypeLabel.setText(SqlConnection.getSqlConnection().getTypeRoomByID(room.getId_type_room()).getTypeRoom());
+                roomTypeLabel.setText(DBConnector.getDBConnector().getTypeRoomByID(room.getId_type_room()).getTypeRoom());
                 floorLabel.setText(room.getFloor() + "");
 
-                for (Reservation reservation: SqlConnection.getSqlConnection().selectReservationWithRoom(room.getId_room())) {
-                    System.out.println(reservation.getName_guest());
+                for (Reservation reservation: DBConnector.getDBConnector().selectReservationWithRoom(room.getId_room())) {
                     records.add(new ReserveRecord(reservation));
                 }
             }

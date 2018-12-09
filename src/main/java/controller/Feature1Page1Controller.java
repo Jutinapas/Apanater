@@ -1,7 +1,7 @@
 package controller;
 
 import model.Room;
-import model.SqlConnection;
+import model.DBConnector;
 import model.TypeRoom;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
@@ -96,7 +96,7 @@ public class Feature1Page1Controller {
             this.id_room = new SimpleStringProperty(room.getId_room() + "");
             this.room_name = new SimpleStringProperty(room.getRoom_name());
             this.id_type_room = new SimpleStringProperty(room.getId_type_room() + "");
-            this.type_room = new SimpleStringProperty(SqlConnection.getSqlConnection().getTypeRoomByID(room.getId_type_room()).getTypeRoom());
+            this.type_room = new SimpleStringProperty(DBConnector.getDBConnector().getTypeRoomByID(room.getId_type_room()).getTypeRoom());
             this.floor = new SimpleStringProperty(room.getFloor() + "");
             this.status = new SimpleStringProperty(room.getStatus());
         }
@@ -168,7 +168,7 @@ public class Feature1Page1Controller {
         // ComboBox
         typeRooms = FXCollections.observableArrayList();
         typeRooms.add(new TypeRoom(0, "ทุกประเภท", 0, 0, "active"));
-        typeRooms.addAll(SqlConnection.getSqlConnection().selectAllTypeRoom());
+        typeRooms.addAll(DBConnector.getDBConnector().selectAllTypeRoom());
         Callback<ListView<TypeRoom>, ListCell<TypeRoom>> typeFactory = lv -> new ListCell<TypeRoom>() {
 
             @Override
@@ -199,7 +199,7 @@ public class Feature1Page1Controller {
         roomTypeBox.getSelectionModel().selectFirst();
 
         SortedSet<Integer> temp = new TreeSet<>();
-        for (Room room : SqlConnection.getSqlConnection().selectAllRoom()) {
+        for (Room room : DBConnector.getDBConnector().selectAllRoom()) {
             temp.add(room.getFloor());
         }
         ObservableList list = FXCollections.observableArrayList();
@@ -232,9 +232,9 @@ public class Feature1Page1Controller {
                     ImageView view = new ImageView();
 
                     {
-                        descButton.setMinWidth(150);
+                        descButton.setMinWidth(175);
                         descButton.setMinHeight(50);
-                        reserveButton.setMinWidth(150);
+                        reserveButton.setMinWidth(175);
                         reserveButton.setMinHeight(50);
                         view.setImage(new Image("images/rounded-add-button.png"));
                         view.setFitHeight(25);
@@ -265,7 +265,7 @@ public class Feature1Page1Controller {
                                 }
                             });
 
-                            reserveButton.setText("จองเลย");
+                            reserveButton.setText("  จองเลย  ");
                             reserveButton.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
@@ -278,11 +278,11 @@ public class Feature1Page1Controller {
                                             LocalDate date_in = fromDatePicker.getValue();
                                             controller.setDate_in(date_in);
                                             if (reserveType == MONTHLY) {
-                                                controller.setType("MONTHLY");
+                                                controller.setType("รายเดือน");
                                                 controller.setDate_out(date_in.plusMonths(numMonthField.getValue()));
                                                 controller.setCount(numMonthField.getValue());
                                             } else if (reserveType == DAILY) {
-                                                controller.setType("DAILY");
+                                                controller.setType("รายวัน");
                                                 controller.setDate_out(toDatePicker.getValue());
                                             }
                                             controller.setRoom(new Room(Integer.parseInt(room.getId_room()), room.getRoom_name(), Integer.parseInt(room.getId_type_room()), Integer.parseInt(room.getFloor()), room.getStatus()));
@@ -294,9 +294,9 @@ public class Feature1Page1Controller {
                             });
 
                             GridPane gridPane = new GridPane();
-                            gridPane.setMinSize(325, 75);
-                            gridPane.setPadding(new Insets(5, 5, 5, 5));
-                            gridPane.setVgap(5);
+                            gridPane.setMinSize(0, 60);
+                            gridPane.setPadding(new Insets(0, 0, 0, 0));
+                            gridPane.setVgap(0);
                             gridPane.setHgap(12.5);
                             gridPane.setAlignment(Pos.CENTER);
 
@@ -348,6 +348,8 @@ public class Feature1Page1Controller {
 
     @FXML
     void handleDailyBtn(ActionEvent event) {
+        dailyBtn.getStyleClass().set(dailyBtn.getStyleClass().size() - 1, "button-common-clicked");
+        monthlyBtn.getStyleClass().set(monthlyBtn.getStyleClass().size() - 1, "button-common");
         if (reserveType == MONTHLY) {
             swapDisable(numMonthField);
             swapDisable(numMonthLabel);
@@ -363,6 +365,8 @@ public class Feature1Page1Controller {
 
     @FXML
     void handleMonthlyBtn(ActionEvent event) {
+        monthlyBtn.getStyleClass().set(monthlyBtn.getStyleClass().size() - 1, "button-common-clicked");
+        dailyBtn.getStyleClass().set(dailyBtn.getStyleClass().size() - 1, "button-common");
         if (reserveType == DAILY) {
             swapDisable(toDatePicker);
             toDatePicker.setValue(null);
@@ -390,7 +394,7 @@ public class Feature1Page1Controller {
 
     @FXML
     void handleSearchBtn(ActionEvent event) throws IOException {
-        SqlConnection instance = SqlConnection.getSqlConnection();
+        DBConnector instance = DBConnector.getDBConnector();
 
         LocalDate date_in = null;
         LocalDate date_out = null;
@@ -445,7 +449,7 @@ public class Feature1Page1Controller {
     private void setResults(ArrayList<Room> list, SortedSet<Integer> roomIDs) {
         rooms.clear();
 
-        if (roomIDs.size() > 0) {
+        if (roomIDs.size() > 0 && list.size() > 0) {
 
             int index = 0;
             int id = roomIDs.first();

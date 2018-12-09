@@ -2,7 +2,7 @@ package controller;
 
 import javafx.scene.control.*;
 import model.Room;
-import model.SqlConnection;
+import model.DBConnector;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -75,7 +75,7 @@ public class Feature1Page3Controller {
                 dateInLabel.setText(date_in.toString());
                 dateOutLabel.setText(date_out.toString());
                 roomNameLabel.setText(room.getRoom_name());
-                roomTypeLabel.setText(SqlConnection.getSqlConnection().getTypeRoomByID(room.getId_type_room()).getTypeRoom());
+                roomTypeLabel.setText(DBConnector.getDBConnector().getTypeRoomByID(room.getId_type_room()).getTypeRoom());
                 floorLabel.setText(room.getFloor() + "");
                 reserveTypeLabel.setText(type);
             }
@@ -91,20 +91,20 @@ public class Feature1Page3Controller {
 
             if (action.get() == ButtonType.OK){
                 // new reserve
-                SqlConnection.getSqlConnection().insertReservation(date_in, date_out, room.getId_room(), type, nameField.getText(), telField.getText());
-                int id_reserve = SqlConnection.getSqlConnection().getRecentReservation();
-                if (type.equals("DAILY")) {
+                DBConnector.getDBConnector().insertReservation(date_in, date_out, room.getId_room(), type, nameField.getText(), telField.getText());
+                int id_reserve = DBConnector.getDBConnector().getRecentReservation();
+                if (type.equals("รายวัน")) {
                     // new daily debt
                     long daysBetween = DAYS.between(date_in, date_out);
-                    Double debt = SqlConnection.getSqlConnection().getTypeRoomByID(room.getId_type_room()).getRentPerDay();
+                    Double debt = DBConnector.getDBConnector().getTypeRoomByID(room.getId_type_room()).getRentPerDay();
                     double balance = debt * daysBetween;
-                    SqlConnection.getSqlConnection().insertDebt(id_reserve, date_out.toString(), balance);
-                } else if (type.equals("MONTHLY")) {
+                    DBConnector.getDBConnector().insertDebt(id_reserve, date_out.toString(), balance);
+                } else if (type.equals("รายเดือน")) {
                     // new monthly debt
-                    double balance = SqlConnection.getSqlConnection().getTypeRoomByID(room.getId_type_room()).getRentPerMonth();
+                    double balance = DBConnector.getDBConnector().getTypeRoomByID(room.getId_type_room()).getRentPerMonth();
                     for (int i = 1; i <= count; i++) {
                         LocalDate date = date_in.plusMonths(i);
-                        SqlConnection.getSqlConnection().insertDebt(id_reserve, date.toString(), balance);
+                        DBConnector.getDBConnector().insertDebt(id_reserve, date.toString(), balance);
                     }
                 }
                 GridPane pane = FXMLLoader.load(getClass().getResource("/fxml/Feature1Page1.fxml"));
