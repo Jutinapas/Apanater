@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
@@ -10,13 +11,14 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" alignment="center" hgap="10" stylesheets="@../css/Button.css" vgap="10" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PageRoomManagementTypeAddNewTypeController">
+<GridPane fx:id="gridPane" alignment="center" hgap="10" stylesheets="@../css/apanater.css" vgap="10" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PageRoomManagementTypeAddNewTypeController">
    <children>
-      <Pane prefHeight="800.0" prefWidth="1280.0">
+      <Pane prefHeight="800.0" prefWidth="1280.0" styleClass="pane">
          <children>
-            <GridPane prefHeight="800.0" prefWidth="200.0">
+            <GridPane prefHeight="800.0" prefWidth="200.0" styleClass="menu-bar" vgap="5.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
@@ -28,11 +30,35 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Button fx:id="feature1Btn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFeature1Btn" text="ค้นหาและจอง">
+                  <Button fx:id="feature1Btn1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFeature1Btn" styleClass="button-bar" text="  การจอง  " textFill="WHITE">
                      <graphic>
                         <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/search-icon.png" />
+                              <Image url="@../images/white-search.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="supermarket" size="22.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="feature2Btn1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFeature2Btn" styleClass="button-bar" text="  แจ้งค้างชำระ" textFill="WHITE" GridPane.rowIndex="1">
+                     <graphic>
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/white-listing.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="supermarket" size="22.0" />
+                     </font>
+                  </Button>
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="button-bar" text="    ปฏิทิน    " textFill="WHITE" GridPane.rowIndex="2">
+                     <graphic>
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/white-calendar.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -40,11 +66,11 @@
                         <Font name="System Bold" size="22.0" />
                      </font>
                   </Button>
-                  <Button fx:id="feature2Btn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFeature2Btn" text="แจ้งค้างชำระ" GridPane.rowIndex="1">
+                  <Button fx:id="feature4Btn1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFeature4Btn" styleClass="button-bar-clicked" text="  จัดการห้อง" textFill="WHITE" GridPane.rowIndex="3">
                      <graphic>
                         <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/notification-icon.png" />
+                              <Image url="@../images/white-room.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -52,35 +78,11 @@
                         <Font name="System Bold" size="22.0" />
                      </font>
                   </Button>
-                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="ปฏิทินการจอง" GridPane.rowIndex="2">
+                  <Button fx:id="feature5Btn1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFeature5Btn" styleClass="button-bar" text=" จัดการหอพัก" textFill="WHITE" GridPane.rowIndex="4">
                      <graphic>
                         <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/calendar-icon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <font>
-                        <Font name="System Bold" size="22.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="feature4Btn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFeature4Btn" text="จัดการห้อง" GridPane.rowIndex="3">
-                     <graphic>
-                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/room-icon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <font>
-                        <Font name="System Bold" size="22.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="feature5Btn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFeature5Btn" text="จัดการหอพัก" GridPane.rowIndex="4">
-                     <graphic>
-                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/building-icon.png" />
+                              <Image url="@../images/white-building.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -89,22 +91,27 @@
                      </font>
                   </Button>
                </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </GridPane>
-            <ImageView fitHeight="74.0" fitWidth="74.0" layoutX="267.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/rounded-add-button.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="366.0" layoutY="47.0" text="เพิ่มประเภทห้อง">
+            <Label layoutX="258.0" layoutY="58.0" styleClass="title-label" text=" เพิ่มประเภทห้อง">
                <font>
                   <Font name="System Bold" size="50.0" />
                </font>
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/rounded-add-button.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Label>
-            <Button fx:id="btnIC" layoutX="799.0" layoutY="681.0" mnemonicParsing="false" onAction="#BtnInCorrect" prefHeight="87.0" prefWidth="181.0" text="ยกเลิก">
+            <Button fx:id="btnIC" layoutX="845.0" layoutY="683.0" mnemonicParsing="false" onAction="#BtnInCorrect" prefHeight="75.0" prefWidth="175.0" styleClass="button-decline" text=" ยกเลิก" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/cancel-mark.png" />
+                        <Image url="@../images/white-error.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -112,11 +119,11 @@
                   <Font size="25.0" />
                </font>
             </Button>
-            <Button fx:id="btnC" layoutX="1024.0" layoutY="681.0" mnemonicParsing="false" onAction="#BtnCorrect" prefHeight="87.0" prefWidth="181.0" text="ตกลง">
+            <Button fx:id="btnC" layoutX="1037.0" layoutY="683.0" mnemonicParsing="false" onAction="#BtnCorrect" prefHeight="75.0" prefWidth="175.0" styleClass="button-accept" text=" ยืนยัน" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/check-mark-black-outline.png" />
+                        <Image url="@../images/white-success.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -124,24 +131,25 @@
                   <Font size="25.0" />
                </font>
             </Button>
-            <Label layoutX="289.0" layoutY="177.0" text="ชื่อประเภท">
+            <Label layoutX="511.0" layoutY="237.0" styleClass="name-label" text="ชื่อประเภท">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <TextField fx:id="tf" layoutX="289.0" layoutY="213.0" prefHeight="42.0" prefWidth="345.0" />
-            <Spinner fx:id="spinnerMonth" layoutX="289.0" layoutY="336.0" prefHeight="53.0" prefWidth="209.0" />
-            <Label layoutX="296.0" layoutY="300.0" text="ราคาเช่ารายเดือน">
+            <TextField fx:id="tf" layoutX="511.0" layoutY="273.0" prefHeight="65.0" prefWidth="450.0" />
+            <Spinner fx:id="spinnerMonth" layoutX="511.0" layoutY="448.0" prefHeight="65.0" prefWidth="209.0" />
+            <Label layoutX="511.0" layoutY="412.0" styleClass="name-label" text="ราคาเช่ารายเดือน">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <Label layoutX="569.0" layoutY="300.0" text="ราคาเช่ารายวัน">
+            <Label layoutX="751.0" layoutY="412.0" styleClass="name-label" text="ราคาเช่ารายวัน">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <Spinner fx:id="spinnerDay" layoutX="550.0" layoutY="336.0" prefHeight="53.0" prefWidth="209.0" />
+            <Spinner fx:id="spinnerDay" layoutX="751.0" layoutY="448.0" prefHeight="65.0" prefWidth="209.0" />
+            <Line endX="850.0" layoutX="361.0" layoutY="150.0" startX="-100.0" />
          </children>
       </Pane>
    </children>

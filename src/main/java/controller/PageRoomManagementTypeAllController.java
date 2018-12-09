@@ -110,7 +110,7 @@ public class PageRoomManagementTypeAllController {
         String fxml = "/fxml/PageRoomManagementInfoTypeRoom.fxml" ;
         ArrayList<TypeRoom> typeRooms = DBConnector.getDBConnector().selectAllTypeRoom();
         for(int i=0 ; i<typeRooms.size() ; i++){
-            data_table.add(new RoomManagementType(typeRooms.get(i).getTypeRoom(),typeRooms.get(i).getRentPerDay()+"",typeRooms.get(i).getRentPerMonth()+"",new Button("รายละเอียด"),fxml,typeRooms.get(i)));
+            data_table.add(new RoomManagementType(typeRooms.get(i).getTypeRoom(),typeRooms.get(i).getRentPerDay()+"",typeRooms.get(i).getRentPerMonth()+"",new Button("ดูรายละเอียด"),fxml,typeRooms.get(i)));
         }
 
         table_typeAll.setItems(data_table);

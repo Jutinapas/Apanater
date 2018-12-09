@@ -133,7 +133,7 @@
                   <TableColumn fx:id="telCol" prefWidth="150.0" text="เบอร์โทรติดต่อ" />
               </columns>
             </TableView>
-            <Button fx:id="backBtn" layoutX="257.0" layoutY="35.0" mnemonicParsing="false" onAction="#backBtnHandle" prefHeight="84.0" prefWidth="96.0" stylesheets="@../css/new_button.css">
+            <Button fx:id="backBtn" layoutX="257.0" layoutY="35.0" mnemonicParsing="false" onAction="#backBtnHandle" prefHeight="84.0" prefWidth="96.0" styleClass="button-back" stylesheets="@../css/new_button.css">
                <graphic>
                   <ImageView fitHeight="61.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                      <image>

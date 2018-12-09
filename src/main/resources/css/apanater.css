@@ -38,6 +38,11 @@
 }
 
 /* Button */
+.button {
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgb(0, 0, 0, 0.4), 5, 0.0, 0, 1);
+}
+
 .button-common {
     -fx-background-color: #b86565;
     -fx-font-family: 'supermarket';
@@ -74,6 +79,15 @@
     -fx-background-color: #a79a8f;
     -fx-font-size: 28px;
 }
+
+.button-back {
+   -fx-background-color: transparent;
+}
+
+.button-back:hover {
+   -fx-background-color:  #e6e6e6;
+}
+
 
 .menu-bar {
     /* 1 pixel border around the top and right of the grid: */

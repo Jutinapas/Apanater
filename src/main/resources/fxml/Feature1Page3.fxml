@@ -157,7 +157,7 @@
             <Label fx:id="reserveTypeLabel" layoutX="832.0" layoutY="196.0" prefHeight="75.0" prefWidth="250.0" styleClass="info-small-label" />
             <Button fx:id="cancelBtn" layoutX="841.0" layoutY="679.0" mnemonicParsing="false" onAction="#cancelBtnHandle" prefHeight="75.0" prefWidth="175.0" styleClass="button-decline" text=" ยกเลิก" textFill="WHITE">
                <graphic>
-                  <ImageView fitHeight="60.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/white-error.png" />
                      </image>
@@ -169,7 +169,7 @@
             </Button>
             <Button fx:id="acceptBtn" layoutX="1032.0" layoutY="679.0" mnemonicParsing="false" onAction="#acceptBtnHandle" prefHeight="75.0" prefWidth="175.0" styleClass="button-accept" text=" ยืนยัน" textFill="WHITE">
                <graphic>
-                  <ImageView fitHeight="60.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/white-success.png" />
                      </image>
