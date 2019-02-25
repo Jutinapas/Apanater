@@ -10,9 +10,11 @@ import java.util.Optional;
 
 public class DebtReminder {
     private String dueDate, roomName, customerName, phoneNumber, roomType, debt;
+    private int id;
     private Button status;
 
-    public DebtReminder(String dueDate, String roomName, String customerName, String phoneNumber, String roomType, String debt, Button status) {
+    public DebtReminder(int id, String dueDate, String roomName, String customerName, String phoneNumber, String roomType, String debt, Button status) {
+        this.id = id;
         this.dueDate = dueDate;
         this.roomName = roomName;
         this.customerName = customerName;
@@ -37,9 +39,7 @@ public class DebtReminder {
                 if (result.get() == ButtonType.OK) {
 
                     //update status ใน Table Debt
-                    int idReservation = SqlConnection.getSqlConnection().getIDReservationByPhoneNumber(this.phoneNumber);
-                    int idDebt = SqlConnection.getSqlConnection().getIDDebtFromIDReservationAndDatePayDebt(idReservation,this.dueDate);
-                    SqlConnection.getSqlConnection().updateStatusInDebt(idDebt);
+                    SqlConnection.getSqlConnection().updateStatusInDebt(this.id);
 
                     status.setText(" ชำระเงินแล้ว");
                     status.setGraphic(new ImageView("/images/yes.png"));
@@ -58,6 +58,14 @@ public class DebtReminder {
                 alert.showAndWait();
             }
         });
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDueDate() {
